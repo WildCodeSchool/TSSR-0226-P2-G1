@@ -15,8 +15,11 @@ L'outil permet de :
 
 Il se compose de deux scripts :
 
-- Un script **Bash** exécutable depuis les deux serveurs
-- Un script **PowerShell** exécutable depuis les deux serveurs
+- Un script **Bash** exécutable depuis le serveur Debian, capable de faire des actions sur la machine Ubuntu et Windows
+- Un script **PowerShell** exécutable depuis serveur Windows, capable de faire des actions sur la machine Ubuntu et Windows
+
+Voici le schéma du lab sur lequel nous travaillerons
+![Schema]()
 
 ---
 
@@ -45,10 +48,10 @@ Il se compose de deux scripts :
 
 | Machine | OS | IP  | Role |
 |---|---|---|---|
-| SRVLX01 | Debian 13 CLI | 172.16.0.10 | Serveur Bash |
-| SRVWIN01 | Windows Server 2022 GUI | 172.16.0.5 | Serveur PowerShell |
-| CLILIN01 | Ubuntu 24 LTS | 172.16.0.30 | Client Linux |
-| CLIWIN01 | Windows 10/11 | 172.16.0.20 | Client Windows |
+| SRVLX01 | Debian 13 CLI | 172.16.10.10 | Serveur Debian |
+| SRVWIN01 | Windows Server 2022 GUI | 172.16.10.5 | Serveur Windows |
+| CLILIN01 | Ubuntu 24 LTS | 172.16.10.30 | Client Linux |
+| CLIWIN01 | Windows 11 | 172.16.10.20 | Client Windows |
 
 - **Masque :** 255.255.255.0
 - **Passerelle :** 172.16.0.254
