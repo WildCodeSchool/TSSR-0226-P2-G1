@@ -19,7 +19,8 @@ Il se compose de deux scripts :
 - Un script **PowerShell** exécutable depuis serveur Windows, capable de faire des actions sur la machine Ubuntu et Windows
 
 Voici le schéma du lab sur lequel nous travaillerons
-![Schema]()
+
+![Schema](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/schema.png)
 
 ---
 
