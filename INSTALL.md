@@ -20,7 +20,7 @@ Nous devons avoir 4 machines virtuelle sous Proxmox :
 -  **Client Windows 11** 
 -  Nom : **CLIWIN01** 
 - IP : **172.16.10.20**
-
+--------------------
 Passerelle par défaut : **172.16.10.254** 
 DNS : **8.8.8.8**
 
