@@ -84,7 +84,36 @@ Pour générer la paire de clés , voici la commande :
 ``` bash
 ssh-keygen -t ed25519 -f ~/.ssh/debian_ubuntu
 ```
+Après cette commande, laissez la clé stocker par défaut en appuyant sur la touche **"ENTREE"** de votre clavier.
+Passez également la **passphrase** avec la touche **"ENTREE"** de votre clavier.
 
 ![keygen_debian_ubuntu](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/keygen_debian_ubuntu.png)
 
-Après cette commande, laisser la clé stocker par defaut en appuyant sur **"ENTREE"** de votre clavier.
+### 2.3 Copie de la clé publique sur CLILIN01
+
+En considérant que sur la machine **CLILIN01** le paragraphe **"x.x Installation d'OpenSSH Serveur sur CLILIN01"** ai été appliqué , nous allons pouvoir copier la clé publique sur la machine Linux :
+
+```bash
+ssh-copy-id -i ~/.ssh/debian_ubuntu.pub wilder@172.16.10.30
+```
+
+Nous devrions avoir cette affichage : 
+
+![keygen_debian_ubuntu_keycopy](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/keygen_debian_ubuntu_fonctionne.png)
+
+Nous allons maintenant créer un *alias* pour avoir seulement à écrire une commande pour se connecter en **ssh** à notre machine Linux.
+
+Pour se faire, nous allons créer et modifier un document :
+
+``` bash
+nano ~/.ssh/config
+```
+
+Puis : 
+
+![creation_alias_ubuntu](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/creation_alias_ubuntu.png)
+
+Vous pouvez dès a présent vous connecter à votre machine en utilisant 
+``` bash
+ssh ubuntu
+```
