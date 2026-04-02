@@ -117,3 +117,33 @@ Vous pouvez dès a présent vous connecter à votre machine en utilisant
 ``` bash
 ssh ubuntu
 ```
+### 2.3 Copie de la clé publique sur CLIWIN01
+
+En considérant que sur la machine **CLIWIN01** le paragraphe **"x.x Installation d'OpenSSH Serveur sur CLIWIN01"** ai été appliqué , nous allons pouvoir copier la clé publique sur la machine Windows :
+
+Après avoir créer une paire de clé sur Debian ( voir 2.2 ) , nous allons pouvoir l'envoyer vers le client Windows
+
+```bash
+cat ~/.ssh/debian_windows.pub | ssh wilder@172.16.10.20 "powershell -Command \"\$input | Out-File -FilePath C:\Users\ton_nom\.ssh\authorized_keys -Append -Encoding ascii\""
+```
+
+Nous allons par la suite créer un *alias* , comme pour Ubuntu, en éditant le fichier **config** 
+
+![creation_alias_windows](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/creation_alias_windows.png)
+
+Pour autoriser la connexion par clé, nous allons modifier le fichier **sshd_config** sur Windows.
+Premièrement nous allons décommenté la ligne suivante en enlevant le **#** : 
+
+![sshd_config_pubkey](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/modif_sshdconfig_pubkey.png)
+
+Puis, commenter les deux dernières lignes du fichier en ajoutant un **#** :
+
+![sshd_config_commente](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/sshd_config_commente.png)
+
+Sauvegardez en faisant un **CTRL+S** , puis faites un ``restart-service sshd``
+
+Vous pouvez dès a présent vous connecter à votre machine en utilisant 
+
+``` bash
+ssh windows
+
