@@ -68,7 +68,7 @@ Maintenant , vérifions l'état du serveur **SSH** avec cette commande :
 systemctl status sshd
 ```
 
-![verif_ssh_debian_up]()
+![verif_ssh_debian_up](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/verif_ssh_debian_UP.png)
 
 Nous voyons que le statut est bien en mode *active*.
 Si cela n'était pas le cas, voici la commande pour démarrer le service : 
@@ -85,6 +85,6 @@ Pour générer la paire de clés , voici la commande :
 ssh-keygen -t ed25519 -f ~/.ssh/debian_ubuntu
 ```
 
-![keygen_debian_ubuntu]()
+![keygen_debian_ubuntu](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/keygen_debian_ubuntu.png)
 
 Après cette commande, laisser la clé stocker par defaut en appuyant sur **"ENTREE"** de votre clavier.
