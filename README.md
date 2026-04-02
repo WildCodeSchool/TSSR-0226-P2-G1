@@ -26,12 +26,12 @@ Voici le schéma du lab sur lequel nous travaillerons
 
 ## Equipe
 
-| Membre |
+| Sprint 1 |
 |--------|
-| Zinedine Balamane |
-| Brice Hemart |
-| Patrick Tambwe |
-| Mohamed Badane |
+| Zinedine Balamane P.O |
+| Brice Hemart S.M |
+| Patrick Tambwe TECH |
+| Mohamed Badane TECH |
 
 ---
 
