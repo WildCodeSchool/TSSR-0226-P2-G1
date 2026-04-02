@@ -51,7 +51,7 @@ apt-cache policy openssh-server
 ```
 
 Lorsque vous rentrez cette commande, il se passe ça : 
-![verif_ssh_debian]()
+![verif_ssh_debian](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/verif_ssh_debian.png)
 
 Nous constatons que **OpenSSH** est bien installé et que nous avons la version 10.0.
 
