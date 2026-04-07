@@ -1,5 +1,4 @@
 
-[USER_GUIDE.md](https://github.com/user-attachments/files/26533262/USER_GUIDE.md)
 # Guide Utilisateur — Outil d'Administration Réseau
 ### Projet 2 · TSSR · Groupe 1 — Zinedine · Mohamed · Brice · Patrick
 
