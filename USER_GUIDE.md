@@ -64,8 +64,8 @@ ssh wilder@CLILIN01 "echo OK"
 ssh wilder@CLIWIN01 "echo OK"
 
 # Vérifier les droits d'exécution
-ls -l script_dady.sh
+ls -l script_bash.sh
 
 # Corriger si nécessaire
-chmod +x script_dady.sh
+chmod +x script_bash.sh
 ```
