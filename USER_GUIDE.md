@@ -33,7 +33,6 @@ Ce guide couvre l'installation, le lancement, la navigation et l'ensemble des fo
 
 ### 2.1. Côté Linux
 
-> Le script Bash se lance uniquement depuis **SRVLX01**.
 
 #### Dépendances requises
 
