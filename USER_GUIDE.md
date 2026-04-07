@@ -51,7 +51,7 @@ Tous les fichiers doivent être placés dans le répertoire suivant sur SRVLX01 
 ```
 ~/Documents/TSSR-1025-P2-G1/
 └── scripts/
-    ├── script_dady.sh       ← point d'entrée principal
+    ├── script_bash.sh       ← point d'entrée principal
     ├── [modules .sh]        ← scripts appelés par le principal
     └── info/                ← fichiers générés lors des opérations
 ```
