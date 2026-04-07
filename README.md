@@ -26,12 +26,22 @@ Voici le schéma du lab sur lequel nous travaillerons
 
 ## Equipe
 
-| Sprint 1 |
-|--------|
-| Zinedine Balamane P.O |
-| Brice Hemart S.M |
-| Patrick Tambwe TECH |
-| Mohamed Badane TECH |
+## Sprint 1
+
+| Membre   | Rôle       | Missions |
+|----------|------------|----------|
+| Zinedine | PO         | Mise en place des 4 VMs / Fonction création de répertoires (Ubuntu) / Pseudo-code du script Bash / Présentation globale du projet et de l'équipe |
+| Brice    | Scrum Master | Menu principal du script / Squelette du script Bash (.sh) / Présentation de l'équipe, organisation et installation des serveurs/clients |
+| Mohamed  | Technicien | Fonctions verrouillage et redémarrage (Ubuntu) / Pseudo-code / Présentation du pseudo-code et du code |
+| Patrick  | Technicien | Mise en place des 4 VMs / Fonction création de compte utilisateur local / Présentation GitHub et documentation |
+
+## Sprint 2
+
+| Membre   | Rôle         | Missions |
+|----------|--------------|----------|
+| Brice    | PO           | Fonction changement de mot de passe (Ubuntu + Windows) / Activation du pare-feu (Ubuntu + Windows) |
+| Mohamed  | Scrum Master | Ajout à un groupe d'administration / Ajout à un groupe |
+| Zinedine | Technicien   | Suppression de compte utilisateur local (Ubuntu + Windows / PowerShell) |
 
 ---
 
