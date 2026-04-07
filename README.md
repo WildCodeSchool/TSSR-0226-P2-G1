@@ -30,10 +30,10 @@ Voici le schéma du lab sur lequel nous travaillerons
 
 | Membre   | Rôle       | Missions |
 |----------|------------|----------|
-| Zinedine | PO         | Mise en place des 4 VMs / Fonction création de répertoires (Ubuntu) / Pseudo-code du script Bash / Présentation globale du projet et de l'équipe |
-| Brice    | Scrum Master | Menu principal du script / Squelette du script Bash (.sh) / Présentation de l'équipe, organisation et installation des serveurs/clients |
-| Mohamed  | Technicien | Fonctions verrouillage et redémarrage (Ubuntu) / Pseudo-code / Présentation du pseudo-code et du code |
-| Patrick  | Technicien | Mise en place des 4 VMs / Fonction création de compte utilisateur local / Présentation GitHub et documentation |
+| Zinedine | PO         |  Fonction création de répertoires (Ubuntu) / Pseudo-code du script Bash /
+| Brice    | Scrum Master | Mise en place VM  / Menu principal du script / Squelette du script Bash (.sh) / 
+| Mohamed  | Technicien | Fonctions verrouillage et redémarrage (Ubuntu) / Pseudo-code / 
+| Patrick  | Technicien | Fonction création de compte utilisateur local / 
 
 ## Sprint 2
 
