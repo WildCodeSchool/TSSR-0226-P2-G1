@@ -22,8 +22,8 @@ Deux versions du script coexistent selon l'environnement serveur :
 
 | Version | Serveur d'exécution | Langage |
 |---------|-------------------|---------|
-| `script_dady.sh` | SRVLX01 (Debian) | Bash |
-| `script_momy.ps1` | SRVWIN01 (Windows Server) | PowerShell |
+| `script_linux.sh` | SRVLX01 (Debian) | Bash |
+| `script_windows.ps1` | SRVWIN01 (Windows Server) | PowerShell |
 
 Ce guide couvre l'installation, le lancement, la navigation et l'ensemble des fonctionnalités disponibles.
 
