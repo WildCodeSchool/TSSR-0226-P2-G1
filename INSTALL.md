@@ -146,4 +146,116 @@ Vous pouvez dès a présent vous connecter à votre machine en utilisant
 
 ``` bash
 ssh windows
+```
+
+## 3. Installation sur le serveur Windows (Windows serveur 2025)
+
+### 3.1 Installation OpenSSH-Client 
+
+Vérifiez que **OpenSSH-Client** est bien installé sur votre Windows serveur :
+
+```
+Get-WindowsCapability -Online | Where-Object Name -like 'OpenSSH*'
+```
+
+Vous devriez avoir ce résultat : 
+
+![Install_serverssh_serveurwindows](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/install_serverssh_serveurwin.png)
+
+Si le client n'est pas installer, entrez la commande suivante : 
+
+```
+Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
+```
+
+### 3.2 Création de paire de clés sur Windows Serveur 
+
+Pour générer la paire de clés voici la commande :
+
+```
+ssh-keygen -t ed25519 -f ~/.ssh/serveur_ubuntu
+```
+
+Après cette commande, laissez la clé stocker par défaut en appuyant sur la touche **"ENTREE"** de votre clavier.
+Passez également la **passphrase** avec la touche **"ENTREE"** de votre clavier.
+
+### 3.3 Copie de la clé Publique sur CLILIN01
+
+En considérant que sur la machine **CLILIN01** le paragraphe **"x.x Installation d'OpenSSH Serveur sur CLILIN01"** ai été appliqué , nous allons pouvoir copier la clé publique sur la machine Linux :
+
+Sur la machine Windows Serveur 2025 : 
+
+```
+ssh wilder@172.16.10.30
+```
+
+La connexion **SSH** s'effectue en rentrant le mot de passe de Wilder.
+
+Ensuite, vous pouvez envoyer votre clé publique sur la machine Linux : 
+
+```shell
+scp C:\Users\Wilder\.ssh\serveur_ubuntu.pub wilder@172.16.10.30:~./ssh
+```
+
+Sur votre machine **Ubuntu** , copier la clé qui provient de *serveur_ubuntu.pub* dans *authorized_keys* .
+
+Comme précédemment, nous allons créer un alias pour faciliter la connexion.
+Nous allons créer le fichier **/.ssh/config** sur notre Windows Serveur :
+
+```shell
+notepad "$env:USERPROFILE\.ssh\config"
+```
+
+Puis remplir le fichier comme ceci : 
+
+![alias_serveur_ubuntu](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/configy_alias_serveur_ubuntu.png)
+
+Sauvegardez en faisant un **CTRL+S**.
+
+Vous pouvez dès a présent vous connecter à votre machine en utilisant 
+
+```shell
+ssh ubuntu
+```
+
+### 3.4 Copie de clé Publique sur CLIWIN01
+
+En considérant que sur la machine **CLIWIN01** le paragraphe **"x.x Installation d'OpenSSH Serveur sur CLIWIN01"** ai été appliqué , nous allons pouvoir copier la clé publique sur la machine Windows :
+
+Après avoir créer une paire de clé sur Windows Serveur ( voir 3.2 ) , nous allons pouvoir l'envoyer vers le client Windows.
+
+Sur la machine Windows Serveur 2025 :
+
+```shell
+ssh wilder@172.16.10.20
+```
+
+La connexion **SSH** s'effectue en rentrant le mot de passe de Wilder.
+
+Ensuite, vous pouvez envoyer votre clé publique sur la machine Windows : 
+
+```shell
+scp C:\Users\Wilder\.ssh\serveur_windows.pub wilder@172.16.10.20:~./ssh
+```
+Sur votre machine **Windows** , copier la clé qui provient de *serveur_windows.pub* dans *authorized_keys* .
+
+Comme précédemment, nous allons créer un alias pour faciliter la connexion.
+Nous allons modifier le fichier **/.ssh/config** sur notre Windows Serveur :
+
+```shell
+notepad "$env:USERPROFILE\.ssh\config"
+```
+
+Puis remplir le fichier comme ceci : 
+
+![alias_serveur_windows](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/configy_alias_serveur_windows.png)
+
+Sauvegardez en faisant un **CTRL+S**.
+
+Vous pouvez dès a présent vous connecter à votre machine en utilisant 
+
+```shell
+ssh windows
+```
+
 
