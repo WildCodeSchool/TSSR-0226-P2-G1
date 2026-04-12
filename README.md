@@ -1,6 +1,17 @@
 # Projet 2 - The Scripting Project
 
-## Présentation du projet
+## Sommaire 
+
+- [**Présentation du projet**](#1---présentation-du-projet)
+- [**L'équipe**](#2---equipe)
+- [**Contexte du projet**](#3---contexte-du-projet)
+- [**Infrastructure**](#4---infrastructure)
+- [**Prerequis et Installation**](#5---prerequis-et-installation)
+- [**Fonctionnalites**](#6---fonctionnalites)
+- [**Améliorations possibles**](#7---améliorations-possibles)
+- [**Difficultés rencontrées**](#8---difficultés-rencontrées)
+
+## 1 - Présentation du projet
 
 Ce projet consiste à créer un outil d'administration centralisée multi-plateforme capable d'administrer
 à distance des machines clientes Windows et Linux depuis deux serveurs distincts.
@@ -24,7 +35,7 @@ Voici le schéma du lab sur lequel nous travaillerons
 
 ---
 
-## Equipe
+## 2 - Equipe
 
 ## Sprint 1
 
@@ -45,7 +56,7 @@ Voici le schéma du lab sur lequel nous travaillerons
 
 ---
 
-## Contexte du projet
+## 3 - Contexte du projet
 
 - **Formation :** TSSR - Technicien Systeme et Reseaux
 - **Hyperviseur :** Proxmox VE (serveur distant)
@@ -53,7 +64,7 @@ Voici le schéma du lab sur lequel nous travaillerons
 
 ---
 
-## Infrastructure
+## 4 - Infrastructure
 
 ### Machines virtuelles (Proxmox)
 
@@ -70,17 +81,17 @@ Voici le schéma du lab sur lequel nous travaillerons
 
 ---
 
-## Prerequis et Installation
+## 5 - Prerequis et Installation
 
 ### Cote serveur Linux (SRVLX01)
 
 ```bash
 
 # Rendre le script executable
-chmod +x scripts/bash/NOMDUSCRIPT.SH
+chmod +x scripts/bash/script_bash.sh
 
 # Lancer le script
-./scripts/bash/NOMDUSCRIPT.SH
+sudo ./script_bash.sh
 ```
 
 ### Cote serveur Windows (SRVWIN01)
@@ -90,12 +101,12 @@ chmod +x scripts/bash/NOMDUSCRIPT.SH
 Set-ExecutionPolicy RemoteSigned
 
 # Lancer le script
-.\scripts\powershell\NOMDUSCRIPT.PS1
+./script_powershell.ps1 ( en administrateur )
 ```
 
 ---
 
-## Fonctionnalites
+## 6 - Fonctionnalites
 
 ### Actions disponibles
 
@@ -131,3 +142,49 @@ Set-ExecutionPolicy RemoteSigned
 | Recherche dans les logs (utilisateur/machine) | Oui | Oui |
 
 ---
+## 7 - Améliorations possibles
+
+### Sélection dynamique de l'utilisateur pour les actions
+
+Aujourd'hui, certaines actions utilisent l'utilisateur défini par défaut (wilder).
+
+Une amélioration serait d'intégrer :
+- Une liste interactive des utilisateurs locaux
+- Une sélection dynamique dans les menus
+
+### Interface plus moderne
+Le script pourrait évoluer vers : 
+
+- Une interface semi-graphique (whiptail / dialog)
+- Une version GUI PowerShell pour Windows
+
+### Gestion des erreurs améliorée
+
+- Vérification avancée des retours SSH
+- Validation syntaxique automatique avant exécution
+
+### Sécurité
+
+- Changement du port 22 pour SSH par le port 2222
+
+### Connexion automatique en ssh
+
+- Faire une fonction pour qu'on puisse automatiquement se connecter en ssh sur nimporte qu'elle machine
+
+### Reduire le nombre de lignes du script
+
+- Faire une fonction pour le menu , ce qui rendrait le script plus agréable à lire
+
+## 8 - Difficultés rencontrées
+
+### Exécution SSH et droits sudo
+
+L'exécution de scripts distants avec ssh et sudo a nécessité :
+
+- Une bonne gestion des prompts
+- Une adaptation de la syntaxe
+- Le choix d'un comportement cohérent selon les actions
+
+### Adaptation en bash / powershell
+
+Pour que les commandes passent de bash a powershell et inversement
