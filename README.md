@@ -2,14 +2,14 @@
 
 ## Sommaire 
 
-- [**Présentation du projet**](#1---présentation-du-projet)
-- [**L'équipe**](#2---equipe)
-- [**Contexte du projet**](#3---contexte-du-projet)
-- [**Infrastructure**](#4---infrastructure)
-- [**Prerequis et Installation**](#5---prerequis-et-installation)
-- [**Fonctionnalites**](#6---fonctionnalites)
-- [**Améliorations possibles**](#7---améliorations-possibles)
-- [**Difficultés rencontrées**](#8---difficultés-rencontrées)
+1. [**Présentation du projet**](#1---présentation-du-projet)
+2. [**L'équipe**](#2---equipe)
+3. [**Contexte du projet**](#3---contexte-du-projet)
+4. [**Infrastructure**](#4---infrastructure)
+5. [**Prerequis et Installation**](#5---prerequis-et-installation)
+6. [**Fonctionnalites**](#6---fonctionnalites)
+7. [**Améliorations possibles**](#7---améliorations-possibles)
+8. [**Difficultés rencontrées**](#8---difficultés-rencontrées)
 
 ## 1 - Présentation du projet
 
