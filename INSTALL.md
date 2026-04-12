@@ -1,5 +1,19 @@
 
 ## SOMMAIRE
+1. [**Prérequis techniques**](#1-prérequis-technique)
+   - [**1.1 Prérequis Proxmox**](#11-prérequis-proxmox)
+   - [**1.2 Prérequis pour le script principal Bash**](#12-prérequis-pour-le-script-principal-bash)
+   - [**1.3 Prérequis pour le script principal PowerShell**](#13-prérequis-pour-le-script-principal-powershell)
+2. [**Installation sur le serveur Debian**](#2-installation-sur-le-serveur-debian)
+   - [**2.1 Installation de Open SSH-Server**](#21-installation-de-open-ssh-server)
+   - [**2.2 Création de paire de clés sur Debian**](#22-création-de-paire-de-clés-sur-debian)
+   - [**2.3 Copie de la clé publique sur CLILIN01**](#23-copie-de-la-clé-publique-sur-clilin01)
+   - [**2.4 Copie de la clé publique sur CLIWIN01**](#24-copie-de-la-clé-publique-sur-cliwin01)
+3. [**Installation sur le serveur Windows (Windows serveur 2025)**](#3-installation-sur-le-serveur-windows-windows-serveur-2025)
+   - [**3.1 Installation OpenSSH-Client**](#31-installation-openssh-client)
+   - [**3.2 Création de paire de clés sur Windows Serveur**](#32-création-de-paire-de-clés-sur-windows-serveur)
+   - [**3.3 Copie de la clé Publique sur CLILIN01**](#33-copie-de-la-clé-publique-sur-clilin01)
+   - [**3.4 Copie de la clé Publique sur CLIWIN01**](#34-copie-de-clé-publique-sur-cliwin01)
 
 ## 1. Prérequis technique
 ### 1.1 Prérequis Proxmox
@@ -34,12 +48,24 @@ Le script principal bash `script_bash.sh` nécessite :
 1. **Accès SSH** configuré vers les machines clientes (Windows et Linux)
 2. **Structure de dossiers** sur le serveur Debian :
 ``` 
-~Documents/TSSR-0226-P2-G1/
+~Documents/TSSR-0226-P2-P1/
  ├── scripts\
  │   ├── script_bash.sh
  │   └── info\    
 ```
+### 1.3 Prérequis pour le script principal powershell
 
+Le script principal powershell ``script_powershell.ps1`` nécessite :
+1. **Accès SSH** configuré vers les machines clientes (Windows et Linux)
+2. **Structure de dossiers** sur le serveur Windows:
+```
+ C:\Users\Wilder\Documents\TSSR-0226-P2-G1\
+ ├── scripts\
+ │   ├── script_powershell.ps1
+ │   └── info\    
+
+```
+3. **Powershell Core 7.6** installé 
 ## 2. Installation sur le serveur Debian
 
 ### 2.1 Installation de Open SSH-Server.
@@ -77,7 +103,7 @@ Si cela n'était pas le cas, voici la commande pour démarrer le service :
 systemctl start sshd
 ```
 
-### 2.2 Création d'une paire de clés Debian
+### 2.2 Création de paire de clés sur Debian
 
 Pour générer la paire de clés , voici la commande : 
 
@@ -117,7 +143,8 @@ Vous pouvez dès a présent vous connecter à votre machine en utilisant
 ``` bash
 ssh ubuntu
 ```
-### 2.3 Copie de la clé publique sur CLIWIN01
+
+### 2.4 Copie de la clé publique sur CLIWIN01
 
 En considérant que sur la machine **CLIWIN01** le paragraphe **"x.x Installation d'OpenSSH Serveur sur CLIWIN01"** ai été appliqué , nous allons pouvoir copier la clé publique sur la machine Windows :
 
@@ -257,5 +284,6 @@ Vous pouvez dès a présent vous connecter à votre machine en utilisant
 ```shell
 ssh windows
 ```
+
 
 
