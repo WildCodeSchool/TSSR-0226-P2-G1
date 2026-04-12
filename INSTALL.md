@@ -34,7 +34,7 @@ Le script principal bash `script_bash.sh` nécessite :
 1. **Accès SSH** configuré vers les machines clientes (Windows et Linux)
 2. **Structure de dossiers** sur le serveur Debian :
 ``` 
-~Documents/TSSR-0226-P2-P1/
+~Documents/TSSR-0226-P2-G1/
  ├── scripts\
  │   ├── script_bash.sh
  │   └── info\    
