@@ -1,14 +1,18 @@
 
 ## SOMMAIRE
 1. [**Prérequis techniques**](#1-prérequis-technique)
+
    - [**1.1 Prérequis Proxmox**](#11-prérequis-proxmox)
    - [**1.2 Prérequis pour le script principal Bash**](#12-prérequis-pour-le-script-principal-bash)
    - [**1.3 Prérequis pour le script principal PowerShell**](#13-prérequis-pour-le-script-principal-powershell)
+
 2. [**Installation sur le serveur Debian**](#2-installation-sur-le-serveur-debian)
+
    - [**2.1 Installation de Open SSH-Server**](#21-installation-de-open-ssh-server)
    - [**2.2 Création de paire de clés sur Debian**](#22-création-de-paire-de-clés-sur-debian)
    - [**2.3 Copie de la clé publique sur CLILIN01**](#23-copie-de-la-clé-publique-sur-clilin01)
    - [**2.4 Copie de la clé publique sur CLIWIN01**](#24-copie-de-la-clé-publique-sur-cliwin01)
+
 3. [**Installation sur le serveur Windows (Windows serveur 2025)**](#3-installation-sur-le-serveur-windows-windows-serveur-2025)
    - [**3.1 Installation OpenSSH-Client**](#31-installation-openssh-client)
    - [**3.2 Création de paire de clés sur Windows Serveur**](#32-création-de-paire-de-clés-sur-windows-serveur)
