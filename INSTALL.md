@@ -12,12 +12,25 @@
    - [**2.2 Création de paire de clés sur Debian**](#22-création-de-paire-de-clés-sur-debian)
    - [**2.3 Copie de la clé publique sur CLILIN01**](#23-copie-de-la-clé-publique-sur-clilin01)
    - [**2.4 Copie de la clé publique sur CLIWIN01**](#24-copie-de-la-clé-publique-sur-cliwin01)
+   - [**2.5 Préparation du serveur Debian pour le script principal**](#25-préparation-du-serveur-debian-pour-le-script-principal)
 
 3. [**Installation sur le serveur Windows (Windows serveur 2025)**](#3-installation-sur-le-serveur-windows-windows-serveur-2025)
+
    - [**3.1 Installation OpenSSH-Client**](#31-installation-openssh-client)
    - [**3.2 Création de paire de clés sur Windows Serveur**](#32-création-de-paire-de-clés-sur-windows-serveur)
    - [**3.3 Copie de la clé Publique sur CLILIN01**](#33-copie-de-la-clé-publique-sur-clilin01)
    - [**3.4 Copie de la clé Publique sur CLIWIN01**](#34-copie-de-clé-publique-sur-cliwin01)
+   - [**3.5 Préparation du serveur Windows pour le script principal**](#35-préparation-du-serveur-windows-pour-le-script-principal)
+
+4. [**Installation de OpenSSH Serveur sur CLIWIN01 (Windows 11)**](#4--installation-de-openssh-serveur-sur-cliwin01-windows-11)
+   - [**4.1 Installation Open SSH en CLI**](#41-installation-open-ssh-en-cli)
+   - [**4.2 Modification du fichier de configuration SSH**](#42-modification-du-fichier-de-configuration-ssh)
+
+5. [**Installation de OpenSSH Serveur sur CLILIN01 (Ubuntu)**](#5--installation-de-openssh-serveur-sur-clilin01-ubuntu)
+   - [**5.1 Installation de OpenSSH-server**](#51-installation-de-openssh-server)
+   - [**5.2 Modification du fichier de configuration SSH**](#52-modification-du-fichier-de-configuration-ssh)
+  
+6. [**FAQ**](#6-faq)
 
 ## 1. Prérequis technique
 ### 1.1 Prérequis Proxmox
@@ -150,7 +163,7 @@ ssh ubuntu
 
 ### 2.4 Copie de la clé publique sur CLIWIN01
 
-En considérant que sur la machine **CLIWIN01** le paragraphe **"x.x Installation d'OpenSSH Serveur sur CLIWIN01"** ai été appliqué , nous allons pouvoir copier la clé publique sur la machine Windows :
+En considérant que sur la machine **CLIWIN01** le paragraphe **"4 . Installation d'OpenSSH Serveur sur CLIWIN01"** ai été appliqué , nous allons pouvoir copier la clé publique sur la machine Windows :
 
 Après avoir créer une paire de clé sur Debian ( voir 2.2 ) , nous allons pouvoir l'envoyer vers le client Windows
 
@@ -179,6 +192,41 @@ Vous pouvez dès a présent vous connecter à votre machine en utilisant
 ssh windows
 ```
 
+### 2.5 Préparation du serveur Debian pour le script principal
+
+#### Création de l'arborescence de dossiers
+
+Le script se trouve dans une structure de dossiers spécifique . Il vous suffira de la créer : 
+
+``` bash
+# Créer la structure de base 
+mkdir -p ~/Documents/TSSR-2026-P2-G1/script/info
+```
+
+Lancez le script depuis le dossier **script** .
+Les fichiers d'informations seront rapatriés dans le dossier **info**.
+
+#### Création du fichier de log
+
+Ce fichier est capable de se créer seul au lancement du script si il n'existe pas, nous allons le créer pour éviter de possibles soucis.
+
+``` bash
+# Créer le fichier de log 
+sudo touch /var/log/log_evt.log
+
+# Donner les droits d'écriture
+sudo chmod 666 /var/log/log_evt.log
+```
+
+#### Placement du script
+
+``` bash
+# Placer le sript
+cp script_bash.sh ~/Documents/TSSR-0226-P2-G1/script/
+
+# Se rendre dans le dossier script et rendre le script executable
+chmod +x script_bash.sh
+```
 ## 3. Installation sur le serveur Windows (Windows serveur 2025)
 
 ### 3.1 Installation OpenSSH-Client 
@@ -289,5 +337,127 @@ Vous pouvez dès a présent vous connecter à votre machine en utilisant
 ssh windows
 ```
 
+### 3.5 Préparation du serveur Windows pour le script principal
 
+#### Installation de PowerShell Core 7.6
 
+Le script PowerShell nécessite PowerShell Core version 7.6.
+
+Pour télécharger et installer PowerShell 7.6 : 
+
+``` powershell
+# Télécharger et installer PowerShell 7.6
+winget install --id Microsoft.Powershell --source winget
+
+# Vérifiez l'installation
+$PSVersionTable.PSVersion
+```
+
+#### Création du fichier de log 
+
+Ce fichier est capable de se créer seul au lancement du script si il n'existe pas, nous allons le créer pour éviter de possibles soucis.
+
+``` powershell
+# Créer le fichier de log (en Administrateur sur PowerShell)
+New-Item -ItemType File -Path "C:\Windows\System32\LogFiles\log_evt.log"
+```
+
+#### Placement du script
+
+``` PowerShell 
+# Placer le script principal
+Copy-Item "script_powershell.ps1" "$env:USERPROFILE\Documents\TSSR-0226-P2-G1\script\"
+```
+
+## 4.  Installation de OpenSSH Serveur sur CLIWIN01 (Windows 11)
+
+### 4.1 Installation Open SSH en CLI 
+
+Ouvrir PowerShell en mode **administrateur** :
+
+```PowerShell
+Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+```
+
+Maintenant, démarrez le service :
+
+```powershell 
+Start-Service sshd
+```
+
+Configurez le service pour qu'il démarre automatiquement au démarrage de la machine :
+
+```powershell
+Set-Service -Name sshd -StartupType "Automatic"
+```
+
+![get_service_sshd]()
+
+#### 4.2 Modification du fichier de configuration SSH
+
+Dans votre PowerShell en administrateur :
+
+```powershell
+notepad C:\ProgramData\ssh\sshd_config
+```
+
+Il faut dé-commenter cette ligne = Enlevez le **#** devant pour l'activer
+
+```
+PubkeyAuthentication yes
+```
+
+Il faut commenter cette ligne = Ajoutez un **#** devant pour la désactiver
+
+```
+PasswordAuthentication yes
+```
+
+Dernière étape , relancez  le service **sshd**
+
+``` powershell
+Restart-Service sshd
+```
+
+## 5.  Installation de OpenSSH Serveur sur CLILIN01 (Ubuntu)
+
+#### 5.1 Installation de OpenSSH-server
+
+Dans le terminal , tapez à la suite ces commandes : 
+
+``` bash
+sudo apt update && sudo apt upgrade -y
+sudo apt install openssh-server -y
+sudo systemctl start ssh 
+sudo systemctl enable ssh
+```
+
+Vérifiez que le service est bien **enabled** :
+
+``` bash
+sudo systemctl status ssh
+```
+
+#### 5.2 Modification du fichier de configuration SSH
+
+Pour se rendre dans le fichier de configuration : 
+
+``` bash
+sudo nano /etc/ssh/sshd_config
+```
+
+Dans ce fichier, vous allez décommenter ces lignes : 
+
+```
+PubkeyAuthentication yes
+PasswordAuthentication no
+```
+
+Faîtes un **CTRL+O** puis **ENTRER** pour sauvegarder. **CTRL+X** pour sortir du fichier . 
+Le plus important maintenant est de redémarrer le service **ssh** :
+
+```bash
+sudo systemctl restart ssh
+```
+
+## 6. FAQ
