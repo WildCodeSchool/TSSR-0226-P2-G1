@@ -134,7 +134,7 @@ Passez également la **passphrase** avec la touche **"ENTREE"** de votre clavier
 
 ### 2.3 Copie de la clé publique sur CLILIN01
 
-En considérant que sur la machine **CLILIN01** le paragraphe **"x.x Installation d'OpenSSH Serveur sur CLILIN01"** ai été appliqué , nous allons pouvoir copier la clé publique sur la machine Linux :
+En considérant que sur la machine **CLILIN01** le paragraphe **"5 . Installation de OpenSSH Serveur sur CLILIN01 (Ubuntu)"** ai été appliqué , nous allons pouvoir copier la clé publique sur la machine Linux :
 
 ```bash
 ssh-copy-id -i ~/.ssh/debian_ubuntu.pub wilder@172.16.10.30
@@ -299,7 +299,7 @@ ssh ubuntu
 
 ### 3.4 Copie de clé Publique sur CLIWIN01
 
-En considérant que sur la machine **CLIWIN01** le paragraphe **"x.x Installation d'OpenSSH Serveur sur CLIWIN01"** ai été appliqué , nous allons pouvoir copier la clé publique sur la machine Windows :
+En considérant que sur la machine **CLIWIN01** le paragraphe **"4 . Installation d'OpenSSH Serveur sur CLIWIN01"** ai été appliqué , nous allons pouvoir copier la clé publique sur la machine Windows :
 
 Après avoir créer une paire de clé sur Windows Serveur ( voir 3.2 ) , nous allons pouvoir l'envoyer vers le client Windows.
 
@@ -391,7 +391,7 @@ Configurez le service pour qu'il démarre automatiquement au démarrage de la ma
 Set-Service -Name sshd -StartupType "Automatic"
 ```
 
-![get_service_sshd]()
+![get_service_sshd](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/get_service_CLIWIN01.png)
 
 #### 4.2 Modification du fichier de configuration SSH
 
