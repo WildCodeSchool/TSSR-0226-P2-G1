@@ -837,7 +837,7 @@ execution_script_ubuntu() {
 
         if [ "$reponse" = "O" ]
         then
-            scp /root/Documents/TSSR-0226-P2-G1/script/script_distant.sh wilder@172.16.10.30:/home/wilder/ 2>/dev/nul
+            scp /root/Documents/TSSR-0226-P2-G1/script/script_distant.sh ubuntu:/home/wilder/ 2>/dev/nul
             ssh -t ubuntu "chmod u+x ~/script_distant.sh && bash ~/script_distant.sh && rm ~/script_distant.sh"
 
             # Verification
