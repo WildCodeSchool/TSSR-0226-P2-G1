@@ -536,9 +536,7 @@ do
         if [ $reponse = "O" ]
         then
             ssh windows 'powershell -Command "
-            New-NetFirewallRule -DisplayName \"Autoriser SSH\" -Direction Inbound -LocalPort 22 -Protocol TCP -Action Allow | Out-Null;
-            New-NetFirewallRule -DisplayName \"Autoriser FTP\" -Direction Inbound -LocalPort 20 -Protocol TCP -Action Allow | Out-Null;
-            Set-NetFirewallProfile -All -Enabled True | Out-Null"'
+            New-NetFirewallRule -DisplayName \"Autoriser SSH\" -Direction Inbound -LocalPort 22 -Protocol TCP -Action Allow | Out-Null; Set-NetFirewallProfile -All -Enabled True | Out-Null"'
             
 
             # Vérification que le pare-feu a été activé 
