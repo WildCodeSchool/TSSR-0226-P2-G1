@@ -1,5 +1,20 @@
 #!/bin/bash
 
+#################################################
+#                                               #
+#                     HELP                      #
+#                                               #
+#################################################
+
+
+##############################################################################################
+############################## DEBUT DU SCRIPT 30.03.2026 ####################################
+############## SCRIPT AUTOMATISATION SUR DEBIAN POUR UN CLIENT WINDOWS ET LINUX ##############
+############## ZINEDINE --------------- BRICE ------------------------- MOHAMED ##############
+######################## A LANCER EN SUDO SINON LE SCRIPT S'ARRETE ###########################
+############################## FIN DU SCRIPT 13.04.2026 ######################################
+##############################################################################################
+
 # Test pour voir si le script est lancé avec sudo
 
 if [ -z "$SUDO_UID" ] 
@@ -1752,6 +1767,43 @@ info_espace_restant_ubuntu()
 
 }
 
+info_espace_restant_windows()
+{
+        # variable jour/heure
+        local heure=$(date +%H%M%S)
+        local jour=$(date +%Y%m%d)
+
+        # variable destination
+        local destination="/root/Documents/TSSR-0226-P2-G1/script/info/info_CLIWIN01_${jour}${heure}.txt"
+
+        # récupération des infos sur les partitions
+        local espace_restant
+        espace_restant=$(ssh windows "powershell -Command \"Get-PSDrive -PSProvider FileSystem | Format-Table -AutoSize | Out-String\"" | tr -d '\r')
+
+        # affichage
+        echo "Espace restant :"
+        echo "$espace_restant"
+
+        # sauvegarde dans le fichier info
+        {
+                echo "Espace restant :"
+                echo "$espace_restant"
+        } > "$destination"
+
+        # test sauvegarde
+        if [ $? -eq 0 ]; then
+                echo "Sauvegarde effectuée dans : Info"
+                write_log "Info_Espace_Disque_Restant_Windows"
+        else
+                echo "Erreur lors de la sauvegarde"
+                write_log "Echec_Info_Espace_Disque_Restant_Windows"
+        fi
+
+        sleep 5
+        clear
+}
+
+
 ############## Info Utilisateurs ##############
 
 info_utilisateurs_ubuntu ()
@@ -1804,8 +1856,6 @@ echo " Droits sur le $dossier : $verification_droits" > "$destination" 2>&1
         clear
 }
 
-
-#!/bin/bash
 
 info_utilisateurs_windows ()
 
@@ -2038,6 +2088,7 @@ case $choix in
                                         6)
                                             write_log "Info_Consultation_Espace_Disque_Windows"
                                             echo "Espace disque restant par partition volume"
+                                            info_espace_restant_windows
                                             ;;
                                         7)
                                             write_log "Info_Consultation_Version_OS_Windows"
