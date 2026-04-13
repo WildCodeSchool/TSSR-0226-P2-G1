@@ -192,7 +192,7 @@ verrouillage_windows() {
          read -p "Voulez-vous vraiment verrouiller le client Windows ? (oui/non/quitter) : " reponse
          if [ "$reponse" = "oui" ]
           then
-            ssh windows "powershell -Command \"\$sessionID = (quser | Select-String 'Active' | ForEach-Object { \$_ -split '\s+' | Select-Object -Index 2 }); tsdiscon \$sessionID\""
+            ssh windows "powershell -Command \"\$sessionID = (quser | Select-String 'Actif' | ForEach-Object { \$_ -split '\s+' | Select-Object -Index 2 }); tsdiscon \$sessionID\""
             
             if [ $? -eq 0 ]
               then
@@ -535,7 +535,11 @@ do
 
         if [ $reponse = "O" ]
         then
-            ssh windows 'powershell -Command "New-NetFirewallRule -DisplayName \"Autoriser SSH\" -Direction Inbound -LocalPort 20 -Protocol TCP -Action Allow | Out-Null; Set-NetFirewallProfile -All -Enabled True | Out-Null"' > /dev/null 2>&1
+            ssh windows 'powershell -Command "
+            New-NetFirewallRule -DisplayName \"Autoriser SSH\" -Direction Inbound -LocalPort 22 -Protocol TCP -Action Allow | Out-Null;
+            New-NetFirewallRule -DisplayName \"Autoriser FTP\" -Direction Inbound -LocalPort 20 -Protocol TCP -Action Allow | Out-Null;
+            Set-NetFirewallProfile -All -Enabled True | Out-Null"'
+            
 
             # Vérification que le pare-feu a été activé 
 
@@ -552,7 +556,7 @@ do
 
         # Réponse négative
 
-        elif [ $reponse = N ]
+        elif [ $reponse = "N" ]
         then
             echo "Opération annulée"
             write_log "Annulation_Activation_PareFeu_Windows"
@@ -602,7 +606,7 @@ do
         # ――――――― USER NEXISTE PAS ―――――――
         echo "Erreur : l'utilisateur $nom_utilisateur n'existe pas."
          write_log "Echec_Suppression_Utilisateur_Ubuntu_${nom_utilisateur}_Inexistant"
-        break
+        continue
     fi
 done
 }
@@ -778,13 +782,14 @@ ajout_group_admin_ubuntu()
                   # verif de l'existence de l'utilisateur          
                   if ssh ubuntu "! grep -q "$reponse:" /etc/passwd"
                    then
-                     echo "L'utilisateur n'existe pas ! veuillez le créer avant de l'ajouter a un groupe ..." && break
+                     echo "L'utilisateur n'existe pas ! veuillez le créer avant de l'ajouter a un groupe ..."
                      write_log "Echec_Ajout_Groupe_Admin_Ubuntu_${reponse}_Inexistant"
+                     break
                   fi
                  
                   # ajout de l'utilisateur au grp administrateur                
                   ssh ubuntu "sudo usermod -aG sudo $reponse"   && echo "$reponse a bien été ajouter au groupe administrateur."
-                   write_log "Ajout_Groupe_Admin_Ubuntu_${reponse}"
+                  write_log "Ajout_Groupe_Admin_Ubuntu_${reponse}"
                   break
         done
 }
@@ -1112,7 +1117,7 @@ info_reseaux_ubuntu()
         local destination="/root/Documents/TSSR-0226-P2-G1/script/info/info_CLILIN01_${jour}${heure}.txt"
 
         # affichage info reseaux
-        info_reseaux=$(ssh ubuntu 'ip a | grep "inet " | awk "{print \$2}" && ip route | grep "default" | awk "{print \$3}"')
+        info_reseaux=$(ssh ubuntu 'ip a | grep "inet " | awk "{print $2}" && ip route | grep "default" | awk "{print $3}"')
 
         echo "information reseaux : "$info_reseaux""
 
