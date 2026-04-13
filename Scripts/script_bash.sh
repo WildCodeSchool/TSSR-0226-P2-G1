@@ -827,33 +827,73 @@ ajout_group_admin_windows()
     done
 }
 
-
 ############## Fonction démmarage de script à distance ##############
 
-execution_script_ubuntu()
-
-{
+execution_script_ubuntu() {
 
     while true
     do
-
-    read -p "Voulez vous lancer ce script à distance ? (O/N) : " reponse
-
+        read -p "Voulez-vous lancer ce script à distance ? (O/N) : " reponse
 
         if [ "$reponse" = "O" ]
         then
-            ssh -t ubuntu "sudo ./menu.Sh"
-                echo "Script lancé pour l'utilisateur Wilder"
-                break
-        fi
+            scp /root/Documents/TSSR-0226-P2-G1/script/script_distant.sh wilder@172.16.10.30:/home/wilder/ 2>/dev/nul
+            ssh -t ubuntu "chmod u+x ~/script_distant.sh && bash ~/script_distant.sh && rm ~/script_distant.sh"
 
-        if [ "$reponse" = "N" ]
+            # Verification
+            if [ $? -eq 0 ]
+            then
+                echo "Script lancé pour l'utilisateur Wilder"
+                write_log "Script_Execute_Ubuntu"
+            else
+                echo "Erreur lors du lancement du script"
+                write_log "Echec_Script_Execute_Ubuntu"
+            fi
+            break
+
+        elif [ "$reponse" = "N" ]
         then
-            echo "Sortie du lancement du script a distance"
+            echo "Sortie du lancement du script à distance"
+            write_log "Sortie_Script_Execute_Ubuntu"
             clear
             break
+
         else
-            echo "Réponse invalide. Merci de saisir O ou N"
+            echo "Réponse invalide. Merci de saisir O ou N."
+        fi
+    done
+}
+
+execution_script_windows() {
+
+    while true
+    do
+        read -p "Voulez-vous lancer ce script à distance ? (O/N) : " reponse
+
+        if [ "$reponse" = "O" ]
+        then
+            scp /root/Documents/TSSR-0226-P2-G1/script/script_distant.ps1 windows:/C:/Users/wilder/ 2>/dev/null
+            ssh windows "powershell.exe -ExecutionPolicy Bypass -File C:/Users/wilder/script_distant.ps1"
+
+            if [ $? -eq 0 ]
+            then
+                echo "Script lancé sur le client Windows"
+                write_log "Script_Execute_Windows"
+            else
+                echo "Erreur lors du lancement du script"
+                write_log "Echec_Script_Execute_Windows"
+            fi
+            break
+
+        elif [ "$reponse" = "N" ]
+        then
+            echo "Sortie du lancement du script à distance"
+            write_log "Sortie_Script_Execute_Windows"
+            clear
+            break
+
+        else
+            echo "Réponse invalide. Merci de saisir O ou N."
         fi
     done
 }
@@ -2032,7 +2072,9 @@ case $choix in
                                 activation_parefeu_windows
                                 ;;
                             7)
+                                write_log "Navigation_Action_Execution_Script_Distant_Windows"
                                 echo "Exécution du script sur la machine distante"
+                                execution_script_windows
                                 ;;
                             #Choix des infos a voir            
                             8) 
