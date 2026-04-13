@@ -524,26 +524,19 @@ done
 
 activation_parefeu_windows ()
 {
-
 while true
 do
-
-
         read -p "Voulez-vous activer le pare-feu ? (O/N): " reponse
         
         # Réponse positive
-
-        if [ $reponse = "O" ]
+        if [ "$reponse" = "O" ]
         then
-            ssh windows 'powershell -Command "
-            New-NetFirewallRule -DisplayName \"Autoriser SSH\" -Direction Inbound -LocalPort 22 -Protocol TCP -Action Allow | Out-Null; Set-NetFirewallProfile -All -Enabled True | Out-Null"'
+            ssh windows "powershell -Command \"New-NetFirewallRule -DisplayName 'Autoriser SSH' -Direction Inbound -LocalPort 22 -Protocol TCP -Action Allow | Out-Null; Set-NetFirewallProfile -All -Enabled True | Out-Null\""
             
-
             # Vérification que le pare-feu a été activé 
-
             if [ $? -eq 0 ]
             then
-                echo "Le pare-feu à bien été activé"
+                echo "Le pare-feu a bien été activé"
                 write_log "Activation_PareFeu_Windows"
                 break
             else
@@ -553,17 +546,17 @@ do
             fi        
 
         # Réponse négative
-
-        elif [ $reponse = "N" ]
+        elif [ "$reponse" = "N" ]
         then
             echo "Opération annulée"
             write_log "Annulation_Activation_PareFeu_Windows"
             clear
             break
+        else
+            echo "Entrée invalide. Veuillez répondre par O ou N"
         fi
 done
 }
-
 ############## Fonction suppression d'un utilisateur local ##############
 
 supprimer_utilisateur_ubuntu() {
