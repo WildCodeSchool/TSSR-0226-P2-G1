@@ -15,11 +15,20 @@
 ############################## FIN DU SCRIPT 13.04.2026 ######################################
 ##############################################################################################
 
+############## Variables Couleurs #########
+
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
 # Test pour voir si le script est lancé avec sudo
 
 if [ -z "$SUDO_UID" ] 
 then
-    echo "Le script n'est pas éxécuté via sudo"
+   echo -e "${RED}#################################################${NC}"
+   echo -e "${RED}# ERREUR : Ce script doit être lancé en ROOT    #${NC}"
+   echo -e "${RED}#################################################${NC}"
 exit 1
 fi
 
@@ -28,6 +37,7 @@ fi
 #                  FONCTIONS                    #
 #                                               #
 #################################################
+
 
 ############## Fonction LOG ###############
 
@@ -58,7 +68,7 @@ creation_repertoire_ubuntu() {
         # Check et creation du repertoire
         ssh ubuntu "
             if [ -d \"$nom_repertoire\" ]; then
-                echo 'Erreur : le répertoire existe déjà.'
+                echo -e '${RED}Erreur : le répertoire existe déjà.${NC}'
                 exit 1
             else
                 mkdir \"$nom_repertoire\"
@@ -68,7 +78,7 @@ creation_repertoire_ubuntu() {
 
         # Verification
         if [ $? -eq 0 ]; then
-            echo "Répertoire '$nom_repertoire' créé avec succès."
+            echo -e "${GREEN}Répertoire '$nom_repertoire' créé avec succès.${NC}"
             write_log "Creation_Repertoire_Ubuntu_${nom_repertoire}"
         fi
 
@@ -88,12 +98,12 @@ creation_repertoire_windows() {
 
         if [ $? -eq 0 ]
         then
-            echo "Erreur : le répertoire '$nom_repertoire' existe déjà."
+            echo -e "${RED}Erreur : le répertoire '$nom_repertoire' existe déjà.${NC}"
             write_log "Echec_Creation_Repertoire_Windows_${nom_repertoire}"
         else
             # On crée le dossier sur Windows via SSH
         ssh windows "powershell -Command \"New-Item -ItemType Directory -Path 'C:\\$nom_repertoire' | Out-Null\""
-            echo "Répertoire '$nom_repertoire' créé avec succès."
+            echo -e "${GREEN}Répertoire '$nom_repertoire' créé avec succès.${NC}"
             write_log "Creation_Repertoire_Windows_${nom_repertoire}"
         fi
     done
@@ -121,10 +131,10 @@ suppression_repertoire_ubuntu() {
     
             # Verification 
             if [ $? -eq 0 ]; then
-                echo "Répertoire '$nom_repertoire' supprimé avec succès."
+                echo -e "${GREEN}Répertoire '$nom_repertoire' supprimé avec succès.${NC}"
                 write_log "Suppression_Repertoire_Ubuntu_${nom_repertoire}"
             else
-                echo "Erreur : le répertoire '$nom_repertoire' n'existe pas."
+                echo -e "${RED}Erreur : le répertoire '$nom_repertoire' n'existe pas.${NC}"
                 write_log "Echec_Suppression_Repertoire_Ubuntu_${nom_repertoire}"
             fi
     done
@@ -145,10 +155,10 @@ suppression_repertoire_windows() {
         then
             # Le dossier existe → on le supprime
             ssh windows "powershell -Command \"Remove-Item -Path 'C:\\$nom_repertoire' -Recurse -Force\""
-            echo "Répertoire '$nom_repertoire' supprimé avec succès."
+            echo -e "${GREEN}Répertoire '$nom_repertoire' supprimé avec succès.${NC}"
             write_log "Suppression_Repertoire_Windows_${nom_repertoire}"
         else
-            echo "Erreur : le répertoire '$nom_repertoire' n'existe pas."
+            echo -e "${RED}Erreur : le répertoire '$nom_repertoire' n'existe pas.${NC}"
             write_log "Echec_Suppression_Repertoire_Windows_${nom_repertoire}"
         fi
     done
@@ -165,20 +175,18 @@ verrouillage_ubuntu() {
             ssh ubuntu "loginctl lock-session \$(loginctl list-sessions | grep 'wilder' | awk '{print \$1}')"
             if [ $? -eq 0 ]
               then
-                echo "Le client linux est maintenant verrouillé" 
+                echo -e "${GREEN}Le client linux est maintenant verrouillé${NC}" 
                 write_log "Verrouillage_Ubuntu"
-                clear
                 break
               else
-                echo "Une erreur est survenu"
+                echo -e "${RED}Une erreur est survenu${NC}"
                 write_log "Echec_Verrouillage_Ubuntu"
                 break
             fi
         elif [ "$reponse" = "quitter" ] || [ "$reponse" = "non" ]
         then
-                echo "Opération annulée"
+                echo -e "${YELLOW}Opération annulée${NC}"
                 write_log "Annulation_Verrouillage_Ubuntu"
-                clear
                 break
         fi
     done     
@@ -196,17 +204,17 @@ verrouillage_windows() {
             
             if [ $? -eq 0 ]
               then
-                echo "Le client Windows est maintenant verrouillé" 
+                echo -e "${GREEN}Le client Windows est maintenant verrouillé${NC}" 
                 write_log "Verrouillage_Windows"
                 break
               else
-                echo "Une erreur est survenu"
+                echo -e "${RED}Une erreur est survenu${NC}"
                 write_log "Echec_Verrouillage_Windows"
                 break
             fi
         elif [ "$reponse" = "quitter" ] || [ "$reponse" = "non" ]
         then
-                echo "Opération annulée"
+                echo -e "${YELLOW}Opération annulée${NC}"
                 write_log "Annulation_Verrouillage_Windows"
                 clear
                 break
@@ -234,11 +242,11 @@ redemarage_ubuntu()
        #verification que le redemarage a bien été effectuer
        if [ $? = 0 ]
          then
-          echo " Redémarrage en cours ..."
+          echo -e "${GREEN}Redémarrage en cours ...${NC}"
           write_log "Redemarrage_Ubuntu"
           break
          else 
-          echo "Une erreur est survenue"
+          echo -e "${RED}Une erreur est survenue${NC}"
           write_log "Echec_Redemarrage_Ubuntu"
           break
        fi
@@ -246,13 +254,13 @@ redemarage_ubuntu()
      # ---reponse négatif---
      elif [ "$reponse" = "non" ] 
       then
-       echo "Opération annulée"
+       echo -e "${RED}Opération annulée${NC}"
        write_log "Annulation_Redemarrage_Ubuntu"
        clear
        break
      elif [ "$reponse" = "quitter" ]
       then
-       echo "Operation annulée"
+       echo -e "${YELLOW}Operation annulée${NC}"
        write_log "Annulation_Redemarrage_Ubuntu"
        clear
        break
@@ -277,11 +285,11 @@ redemarage_windows()
        #verification que le redemarage a bien été effectuer
        if [ $? = 0 ]
          then
-          echo " Redémarrage en cours ..."
+          echo -e "${GREEN}Redémarrage en cours ...${NC}"
           write_log "Redemarrage_Windows"
           break
          else 
-          echo "Une erreur est survenue"
+          echo -e "${RED}Une erreur est survenue${NC}"
           write_log "Echec_Redemarrage_Windows"
           break
        fi
@@ -289,13 +297,13 @@ redemarage_windows()
      # ---reponse négatif---
      elif [ "$reponse" = "non" ] 
       then
-       echo "Opération annulée"
+       echo -e "${YELLOW}Opération annulée${NC}"
        write_log "Annulation_Redemarrage_Windows"
        clear
        break
      elif [ "$reponse" = "quitter" ]
       then
-       echo "Operation annulée"
+       echo -e "${YELLOW}Operation annulée${NC}"
        write_log "Annulation_Redemarrage_Windows"
        clear
        break
@@ -319,7 +327,7 @@ read -p "Quel utilisateur souhaitez-vous créer ? (q pour quitter) : " Nom_Utili
 # Condition de sortie
 
 if [[ "$Nom_Utilisateur" == "q" ]] ; then
-    echo "Sortie de la création d'utilisateurs"
+    echo -e "${YELLOW}Sortie de la création d'utilisateurs${NC}"
     write_log "Annulation_Creation_Utilisateurs_Ubuntu"
     clear
     break
@@ -329,7 +337,7 @@ fi
   
 if ssh ubuntu "id $Nom_Utilisateur" &>/dev/null 
 then
-        echo "L'utilisateur $Nom_Utilisateur existe déjà " >&2
+        echo -e "${RED}L'utilisateur $Nom_Utilisateur existe déjà${NC} " >&2
 else
 # Créer l'utilisateur,
 ssh ubuntu "sudo useradd -m $Nom_Utilisateur"
@@ -337,11 +345,11 @@ ssh ubuntu "sudo useradd -m $Nom_Utilisateur"
 # Vérifier si la création de l'utilisateur a réussi,
         if [ $? -eq 0 ]
         then
-                echo "Utilisateur '$Nom_Utilisateur' a été créé avec succès."
+                echo -e "${GREEN}Utilisateur '$Nom_Utilisateur' a été créé avec succès.${NC}"
                 write_log "Creation_Utilisateur_Ubuntu_${Nom_Utilisateur}"
 
         else
-                echo "Erreur lors de la création de l'utilisateur '$Nom_Utilisateur'"
+                echo -e "${RED}Erreur lors de la création de l'utilisateur '$Nom_Utilisateur'${NC}"
                 write_log "Echec_Creation_Utilisateur_Ubuntu_${Nom_Utilisateur}"
         fi  
 fi
@@ -363,7 +371,7 @@ read -p "Quel utilisateur souhaitez-vous créer ? (q pour quitter) : " Nom_Utili
 # Condition de sortie
 
 if [[ "$Nom_Utilisateur" == "q" ]] ; then
-    echo "Sortie de la création d'utilisateurs"
+    echo -e "${YELLOW}Sortie de la création d'utilisateurs${NC}"
     write_log "Annulation_Creation_Utilisateurs_Windows"
     clear
     break
@@ -373,7 +381,7 @@ fi
   
 if ssh windows "net user \"$Nom_Utilisateur\"" &>/dev/null 
 then
-        echo "L'utilisateur $Nom_Utilisateur existe déjà " >&2
+        echo -e "${RED}L'utilisateur $Nom_Utilisateur existe déjà${NC} " >&2
 else
 # Créer l'utilisateur,
 ssh windows "net user \"$Nom_Utilisateur\" \"\" /add"
@@ -381,11 +389,11 @@ ssh windows "net user \"$Nom_Utilisateur\" \"\" /add"
 # Vérifier si la création de l'utilisateur a réussi,
         if [ $? -eq 0 ]
         then
-                echo "Utilisateur '$Nom_Utilisateur' a été créé avec succès."
+                echo -e "${GREEN}Utilisateur '$Nom_Utilisateur' a été créé avec succès.${RED}"
                 write_log "Creation_Utilisateurs_Windows_${Nom_Utilisateur}"
 
         else
-                echo "Erreur lors de la création de l'utilisateur '$Nom_Utilisateur'"
+                echo -e "${RED}Erreur lors de la création de l'utilisateur '$Nom_Utilisateur'${NC}"
                 write_log "Echec_Creation_Utilisateurs_Windows_${Nom_Utilisateur}"
         fi  
 fi
@@ -404,7 +412,7 @@ read -p "De quel compte voulez-vous changer le mot de passe ? (q pour quitter) :
 
         # Condition de sortie
         if [[ "$nom_user" == "q" ]] ; then
-            echo "Sortie du changement de mot de passe"
+            echo -e "${YELLOW}Sortie du changement de mot de passe${NC}"
             write_log "Annulation_Changement_MotDePasse_Ubuntu"
             clear
             break
@@ -413,7 +421,7 @@ read -p "De quel compte voulez-vous changer le mot de passe ? (q pour quitter) :
         # Vérifier si l'utilisateur existe
         if ssh ubuntu "id $nom_user" &>/dev/null
         then
-            echo "L'utilisateur '$nom_user' existe. Préparation du changement..."
+            echo -e "${RED}L'utilisateur '$nom_user' existe. Préparation du changement...${NC}"
             
             # Changement de mot de passe 
             ssh -t ubuntu "sudo passwd $nom_user"
@@ -421,14 +429,14 @@ read -p "De quel compte voulez-vous changer le mot de passe ? (q pour quitter) :
             # Vérifier si la commande passwd a réussi
             if [ $? -eq 0 ]
             then
-                echo "Succès : Le mot de passe de '$nom_user' a été changé."
+                echo -e "${GREEN}Succès : Le mot de passe de '$nom_user' a été changé.${NC}"
                  write_log "Changement_MotDePasse_Ubuntu_${nom_user}"
             else
-                echo "Erreur lors du changement de mot de passe."
+                echo -e "${RED}Erreur lors du changement de mot de passe.${NC}"
                 write_log "Erreur_Changement_MotDePasse_Ubuntu_${nom_user}"
             fi
         else
-            echo "Erreur : L'utilisateur '$nom_user' n'existe pas sur la machine distante."
+            echo -e "${RED}Erreur : L'utilisateur '$nom_user' n'existe pas sur la machine distante.${NC}"
             write_log "Echec_Changement_MotDePasse_Ubuntu_User_${nom_user}_Inexistant"
 
         fi
@@ -445,7 +453,7 @@ read -p "De quel compte voulez-vous changer le mot de passe ? (q pour quitter) :
         # Condition de sortie
 
         if [[ "$nom_user" == "q" ]]; then
-            echo "Sortie du changement de mot de passe"
+            echo -e "${YELLOW}Sortie du changement de mot de passe${NC}"
             write_log "Sortie_Changement_MotDePasse_Windows"
             clear
             break
@@ -455,7 +463,7 @@ read -p "De quel compte voulez-vous changer le mot de passe ? (q pour quitter) :
 
             if ssh windows "net user $nom_user" > /dev/null 2>&1; 
             then
-                echo "Changement de mot de passe pour $nom_user sur Windows..."
+                echo -e "${YELLOW}Changement de mot de passe pour $nom_user sur Windows...${NC}"
 
                 # Changement du mot de passe
 
@@ -465,14 +473,14 @@ read -p "De quel compte voulez-vous changer le mot de passe ? (q pour quitter) :
 
                 if [ $? -eq 0 ]; 
                 then
-                    echo "Succès : Le mot de passe de '$nom_user' a été changé."
+                    echo -e "${GREEN}Succès : Le mot de passe de '$nom_user' a été changé.${NC}"
                     write_log "Changement_MotDePasse_Windows_${nom_user}"
                 else
-                    echo "Erreur : Le changement de mot de passe à échoué"
+                    echo -e "${RED}Erreur : Le changement de mot de passe à échoué${NC}"
                     write_log "Echec_Changement_MotDePasse_Windows_${nom_user}"
                 fi
             else
-            echo "Erreur : L'utilisateur n'existe pas"
+            echo -e "${RED}Erreur : L'utilisateur n'existe pas${NC}"
             write_log "Echec_Changement_MotDePasse_Windows_User_${nom_user}_Inexistant"
             fi
     done
@@ -499,11 +507,11 @@ do
 
             if [ $? = 0 ]
             then
-                echo "Le pare-feu à bien été activé"
+                echo -e "${GREEN}Le pare-feu à bien été activé${NC}"
                 write_log "Activation_PareFeu_Ubuntu"
                 break
             else
-                echo "Une erreur est survenue"
+                echo -e "${RED}Une erreur est survenue${NC}"
                 write_log "Echec_Activation_PareFeu_Ubuntu"
                 break
             fi        
@@ -512,7 +520,7 @@ do
 
         elif [ $reponse = "N" ]
         then
-            echo "Opération annulée"
+            echo -e "${YELLOW}Opération annulée${NC}"
             write_log "Annulation_Activation_PareFeu_Ubuntu"
             clear
             break
@@ -536,11 +544,11 @@ do
             # Vérification que le pare-feu a été activé 
             if [ $? -eq 0 ]
             then
-                echo "Le pare-feu a bien été activé"
+                echo -e "${GREEN}Le pare-feu a bien été activé${NC}"
                 write_log "Activation_PareFeu_Windows"
                 break
             else
-                echo "Une erreur est survenue"
+                echo -e "${RED}Une erreur est survenue${NC}"
                 write_log "Echec_Activation_PareFeu_Windows"
                 break
             fi        
@@ -548,12 +556,12 @@ do
         # Réponse négative
         elif [ "$reponse" = "N" ]
         then
-            echo "Opération annulée"
+            echo -e "${YELLOW}Opération annulée${NC}"
             write_log "Annulation_Activation_PareFeu_Windows"
             clear
             break
         else
-            echo "Entrée invalide. Veuillez répondre par O ou N"
+            echo -e "${RED}Entrée invalide. Veuillez répondre par O ou N${NC}"
         fi
 done
 }
@@ -570,7 +578,7 @@ do
     # Condition de sortie
 
         if [[ "$nom_utilisateur" == "q" ]]; then
-            echo "Sortie de suppression d'utilisateur"
+            echo -e "${YELLOW}Sortie de suppression d'utilisateur${NC}"
             write_log "Annulation_Suppression_Utilisateur_Ubuntu"
             clear
             break
@@ -579,23 +587,23 @@ do
     # ――――――― CHECK SI EXISTE DEJA ―――――
     if ssh ubuntu "id "$nom_utilisateur"" > /dev/null 2>&1
     then
-        echo "Suppression de $nom_utilisateur en cours.."
+        echo -e "${YELLOW}Suppression de $nom_utilisateur en cours..${NC}"
         # ――――――― SUPPRESSION USER ―――――――
         ssh ubuntu "sudo userdel -r "$nom_utilisateur" > /dev/null 2>&1 || true"
 
         # ――――――― VERIF SI CA MARCHE BIEN ――――――
         if ! ssh ubuntu "id $nom_utilisateur" > /dev/null 2>&1
         then
-            echo "L'utilisateur $nom_utilisateur a été supprimé avec succès."
+            echo -e "${GREEN}L'utilisateur $nom_utilisateur a été supprimé avec succès.${NC}"
             write_log "Suppression_Utilisateur_Ubuntu_${nom_utilisateur}"
         else
-            echo "Erreur : la suppression de $nom_utilisateur a échoué."
+            echo -e "${RED}Erreur : la suppression de $nom_utilisateur a échoué.${NC}"
              write_log "Echec_Suppression_Utilisateur_Ubuntu_${nom_utilisateur}"
         fi
 
     else
         # ――――――― USER NEXISTE PAS ―――――――
-        echo "Erreur : l'utilisateur $nom_utilisateur n'existe pas."
+        echo -e "${RED}Erreur : l'utilisateur $nom_utilisateur n'existe pas.${NC}"
          write_log "Echec_Suppression_Utilisateur_Ubuntu_${nom_utilisateur}_Inexistant"
         continue
     fi
@@ -613,7 +621,7 @@ do
     # Condition de sortie
 
         if [[ "$nom_utilisateur" == "q" ]]; then
-            echo "Sortie de suppression d'utilisateur"
+            echo -e "${YELLOW}Sortie de suppression d'utilisateur${NC}"
             write_log "Annulation_Suppression_Utilisateur_Ubuntu"
             clear
             break
@@ -622,24 +630,24 @@ do
     # ――――――― CHECK SI EXISTE DEJA ―――――
     if ssh windows "net user \"$nom_utilisateur\"" > /dev/null 2>&1
     then
-        echo "Suppression de $nom_utilisateur en cours.."
+        echo -e "${YELLOW}Suppression de $nom_utilisateur en cours..${NC}"
         # ――――――― SUPPRESSION USER ―――――――
         ssh windows "powershell -Command \"Remove-LocalUser -Name '$nom_utilisateur'\""
 
         # ――――――― VERIF SI CA MARCHE BIEN ――――――
         if ! ssh windows "net user \"$nom_utilisateur\"" > /dev/null 2>&1
         then
-            echo "L'utilisateur "$nom_utilisateur" a été supprimé avec succès."
+            echo -e "${GREEN}L'utilisateur "$nom_utilisateur" a été supprimé avec succès.${NC}"
             write_log "Suppression_Utilisateur_Windows_${nom_utilisateur}"
         else
-            echo "Erreur : la suppression de "$nom_utilisateur" a échoué."
+            echo -e "${RED}Erreur : la suppression de "$nom_utilisateur" a échoué.${NC}"
             write_log "Echec_Suppression_Utilisateur_Windows_${nom_utilisateur}"
             
         fi
 
     else
         # ――――――― USER NEXISTE PAS ―――――――
-        echo "Erreur : l'utilisateur "$nom_utilisateur" n'existe pas."
+        echo -e "${RED}Erreur : l'utilisateur "$nom_utilisateur" n'existe pas.${NC}"
         write_log "Echec_Suppression_Utilisateur_Windows_${nom_utilisateur}_Inexistant"
     fi
 done
@@ -654,7 +662,7 @@ ajout_group_ubuntu() {
         read -p "Quel utilisateur souhaitez-vous ajouter à un groupe ? (q pour quitter) : " reponse
 
         if [[ "$reponse" == "q" ]]; then
-            echo "Sortie de l'ajout d'un utilisateur à un groupe"
+            echo -e "${YELLOW}Sortie de l'ajout d'un utilisateur à un groupe${NC}"
             write_log "Navigation_Quitter_Ajout_Groupe"
             clear
             break
@@ -663,7 +671,7 @@ ajout_group_ubuntu() {
         # Vérification que l'utilisateur existe
         if ! ssh ubuntu "id $reponse" &>/dev/null
         then
-            echo "L'utilisateur '$reponse' n'existe pas !"
+            echo -e "${RED}L'utilisateur '$reponse' n'existe pas !${NC}"
             write_log "Echec_Ajout_Groupe_Ubuntu_${reponse}_Inexistant"
             continue 
         fi
@@ -676,7 +684,7 @@ ajout_group_ubuntu() {
             # Ajout de l'utilisateur au groupe existant
             ssh ubuntu "sudo usermod -aG $nom $reponse"
             if [ $? -eq 0 ]; then
-                echo "$reponse a bien été ajouté à $nom."
+                echo -e "${GREEN}$reponse a bien été ajouté à $nom.${NC}"
                 write_log "Succes_Ajout_Groupe_Ubuntu_${reponse}_A_${nom}"
                 break
             fi
@@ -688,12 +696,12 @@ ajout_group_ubuntu() {
                 # Créer le groupe et y ajouter l'utilisateur 
                 ssh ubuntu "sudo groupadd $nom && sudo usermod -aG $nom $reponse"
                 if [ $? -eq 0 ]; then
-                    echo "Groupe '$nom' créé et $reponse ajouté avec succès."
+                    echo -e "${GREEN}Groupe '$nom' créé et $reponse ajouté avec succès.${NC}"
                     write_log "Succes_Creation_Et_Ajout_Groupe_${nom}_User_${reponse}"
                     break
                 fi
             else
-                echo "Opération annulée."
+                echo -e "${YELLOW}Opération annulée.${NC}"
                 write_log "Annulation_Creation_Groupe_${nom}"
                 break
             fi
@@ -710,7 +718,7 @@ ajout_group_windows()
                 
         # Condition de sortie
         if [[ "$reponse" == "q" ]]; then
-            echo "Sortie de l'ajout d'un utilisateur a un groupe"
+            echo -e "${YELLOW}Sortie de l'ajout d'un utilisateur a un groupe${NC}"
             write_log "Navigation_Quitter_Ajout_Groupe_Windows"
             clear
             break
@@ -720,7 +728,7 @@ ajout_group_windows()
         # Utilisation de \" pour que Windows reçoive bien les guillemets
         if ! ssh windows "net user \"$reponse\"" > /dev/null 2>&1
         then
-            echo "L'utilisateur '$reponse' n'existe pas sur Windows !"
+            echo -e "${RED}L'utilisateur '$reponse' n'existe pas sur Windows !${NC}"
             write_log "Echec_Ajout_Groupe_Windows_${reponse}_Inexistant"
             continue
         fi
@@ -732,7 +740,7 @@ ajout_group_windows()
         if ssh windows "net localgroup \"$nom\"" > /dev/null 2>&1
         then
             # ajout de l'utilisateur au groupe
-            ssh windows "net localgroup \"$nom\" \"$reponse\" /add" && echo "$reponse a bien été ajouté à $nom."
+            ssh windows "net localgroup \"$nom\" \"$reponse\" /add" && echo -e "${GREEN}$reponse a bien été ajouté à $nom.${NC}"
             write_log "Succes_Ajout_Groupe_Windows_${reponse}_A_${nom}"
             break
         else
@@ -741,7 +749,7 @@ ajout_group_windows()
             if [[ "$group" == "oui" ]] 
             then
                 # créer le groupe et y ajouter l'utilisateur 
-                ssh windows "net localgroup \"$nom\" /add && net localgroup \"$nom\" \"$reponse\" /add" && echo "$reponse a bien été ajouté au nouveau groupe $nom."
+                ssh windows "net localgroup \"$nom\" /add && net localgroup \"$nom\" \"$reponse\" /add" && echo -e "${GREEN}$reponse a bien été ajouté au nouveau groupe $nom.${NC}"
                 write_log "Succes_Creation_Et_Ajout_Groupe_Windows_${nom}_User_${reponse}"
                 break
             else
@@ -764,7 +772,7 @@ ajout_group_admin_ubuntu()
   # Condition de sortie
 
         if [[ "$reponse" == "q" ]]; then
-            echo "Sortie de l'ajout d'un utilisateur a un groupe administrateur"
+            echo -e "${YELLOW}Sortie de l'ajout d'un utilisateur a un groupe administrateur${NC}"
             write_log "Navigation_Quitter_Ajout_Groupe_Admin_Ubuntu"
             clear
             break
@@ -773,13 +781,13 @@ ajout_group_admin_ubuntu()
                   # verif de l'existence de l'utilisateur          
                   if ssh ubuntu "! grep -q "$reponse:" /etc/passwd"
                    then
-                     echo "L'utilisateur n'existe pas ! veuillez le créer avant de l'ajouter a un groupe ..."
+                     echo -e "${RED}L'utilisateur n'existe pas ! veuillez le créer avant de l'ajouter a un groupe ...${NC}"
                      write_log "Echec_Ajout_Groupe_Admin_Ubuntu_${reponse}_Inexistant"
                      break
                   fi
                  
                   # ajout de l'utilisateur au grp administrateur                
-                  ssh ubuntu "sudo usermod -aG sudo $reponse"   && echo "$reponse a bien été ajouter au groupe administrateur."
+                  ssh ubuntu "sudo usermod -aG sudo $reponse"   && echo -e "${GREEN}$reponse a bien été ajouter au groupe administrateur.${NC}"
                   write_log "Ajout_Groupe_Admin_Ubuntu_${reponse}"
                   break
         done
@@ -795,7 +803,7 @@ ajout_group_admin_windows()
                 
         # Condition de sortie
         if [[ "$reponse" == "q" ]]; then
-            echo "Sortie de l'ajout d'un utilisateur au groupe administrateur"
+            echo -e "${YELLOW}Sortie de l'ajout d'un utilisateur au groupe administrateur${NC}"
             write_log "Navigation_Quitter_Ajout_Groupe_Admin_Windows"
             clear
             break
@@ -804,23 +812,23 @@ ajout_group_admin_windows()
         # verif que l'utilisateur existe
         if ssh windows "net user \"$reponse\"" > /dev/null 2>&1
         then
-            echo "Connexion au compte administrateur ..."
+            echo -e "${YELLOW}Connexion au compte administrateur ...${NC}"
             
             # Astuce TSSR : On essaie Administrators (anglais) ET Administrateurs (français)
             # ou on utilise le SID du groupe, mais le plus simple est de tester le nom.
             ssh windows "net localgroup Administrateurs \"$reponse\" /add || net localgroup Administrators \"$reponse\" /add"
             
             if [ $? -eq 0 ]; then
-                echo "$reponse a bien été ajouté au groupe administrateur."
+                echo -e "${GREEN}$reponse a bien été ajouté au groupe administrateur.${NC}"
                 write_log "Succes_Ajout_Groupe_Admin_Windows_${reponse}"
                 break
             else
-                echo "Erreur lors de l'ajout au groupe (droit insuffisant ou groupe introuvable)."
+                echo -e "${RED}Erreur lors de l'ajout au groupe (droit insuffisant ou groupe introuvable).${NC}"
                 write_log "Erreur_Systeme_Ajout_Admin_Windows_${reponse}"
                 break
             fi
         else
-            echo "L'utilisateur '$reponse' n'existe pas !"
+            echo -e "${RED}L'utilisateur '$reponse' n'existe pas !${NC}"
             write_log "Echec_Ajout_Groupe_Admin_Windows_${reponse}_Inexistant"
             break
         fi
@@ -843,23 +851,23 @@ execution_script_ubuntu() {
             # Verification
             if [ $? -eq 0 ]
             then
-                echo "Script lancé pour l'utilisateur Wilder"
+                echo -e "${GREEN}Script lancé pour l'utilisateur Wilder${NC}"
                 write_log "Script_Execute_Ubuntu"
             else
-                echo "Erreur lors du lancement du script"
+                echo -e "${RED}Erreur lors du lancement du script${NC}"
                 write_log "Echec_Script_Execute_Ubuntu"
             fi
             break
 
         elif [ "$reponse" = "N" ]
         then
-            echo "Sortie du lancement du script à distance"
+            echo -e "${YELLOW}Sortie du lancement du script à distance${NC}"
             write_log "Sortie_Script_Execute_Ubuntu"
             clear
             break
 
         else
-            echo "Réponse invalide. Merci de saisir O ou N."
+            echo -e "${RED}Réponse invalide. Merci de saisir O ou N.${NC}"
         fi
     done
 }
@@ -877,23 +885,23 @@ execution_script_windows() {
 
             if [ $? -eq 0 ]
             then
-                echo "Script lancé sur le client Windows"
+                echo -e "${GREEN}Script lancé sur le client Windows${NC}"
                 write_log "Script_Execute_Windows"
             else
-                echo "Erreur lors du lancement du script"
+                echo -e "${RED}Erreur lors du lancement du script${NC}"
                 write_log "Echec_Script_Execute_Windows"
             fi
             break
 
         elif [ "$reponse" = "N" ]
         then
-            echo "Sortie du lancement du script à distance"
+            echo -e "${YELLOW}Sortie du lancement du script à distance${NC}"
             write_log "Sortie_Script_Execute_Windows"
             clear
             break
 
         else
-            echo "Réponse invalide. Merci de saisir O ou N."
+            echo -e "${RED}Réponse invalide. Merci de saisir O ou N.${NC}"
         fi
     done
 }
@@ -926,10 +934,10 @@ echo "Liste des utilisateurs locaux : "$liste_users"" > "$destination"
 
         if [ $? = 0 ]
         then 
-            echo "Sauvegarde effectué dans : Info"
+            echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
             write_log "Info_Liste_Utilisateur_Ubuntu"
         else
-            echo "Erreur lors de la sauvegarde"
+            echo -e "${RED}Erreur lors de la sauvegarde${NC}"
             write_log "Echec_Info_Liste_Utilisateur_Ubuntu"
         fi
 
@@ -966,10 +974,10 @@ echo "$liste_users" >> "$destination"
 
         if [ $? = 0 ]
         then 
-            echo "Sauvegarde effectué dans : Info"
+            echo -e "${GREEN}Sauvegarde effectué dans : Info${GREEN}"
             write_log "Info_Liste_Utilisateur_Windows"
         else
-            echo "Erreur lors de la sauvegarde"
+            echo -e "${RED}Erreur lors de la sauvegarde${NC}"
             write_log "Echec_Info_Liste_Utilisateur_Windows"
         fi
 
@@ -1007,10 +1015,10 @@ echo "Version de l'OS : "$version_os"" > "$destination"
 
         if [ $? = 0 ]
         then 
-            echo "Sauvegarde effectué dans : Info"
+            echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
             write_log "Info_Version_OS_Ubuntu"
         else
-            echo "Erreur lors de la sauvegarde"
+            echo -e "${RED}Erreur lors de la sauvegarde${NC}"
             write_log "Echec_Info_Version_OS_Ubuntu"
         fi
 
@@ -1047,10 +1055,10 @@ echo "$version_os" >> "$destination"
 
         if [ $? = 0 ]
         then 
-            echo "Sauvegarde effectué dans : Info"
+            echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
             write_log "Info_Version_OS_Windows"
         else
-            echo "Erreur lors de la sauvegarde"
+            echo "${RED}Erreur lors de la sauvegarde${NC}"
             write_log "Echec_Info_Version_OS_Windows"
         fi
 
@@ -1083,10 +1091,10 @@ info_cinqlogin_ubuntu()
         # test sauvegarde
         if test $? = 0
         then
-         echo "Sauvegarde effectué dans : Info"
+         echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
          write_log "Info_5_Derniers_Login_Ubuntu"
         else 
-         echo "Erreur lors de la sauvegarde"
+         echo -e "${RED}Erreur lors de la sauvegarde${NC}"
          write_log "Echec_Info_5_Derniers_Login_Ubuntu"
         fi
 
@@ -1123,10 +1131,10 @@ echo "$liste_login" >> "$destination"
 
         if [ $? = 0 ]
         then 
-            echo "Sauvegarde effectué dans : Info"
+            echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
             write_log "Info_5_Derniers_Login_Windows"
         else
-            echo "Erreur lors de la sauvegarde"
+            echo -e "${RED}Erreur lors de la sauvegarde${NC}"
             write_log "Echec_Info_5_Derniers_Login_Windows"
         fi
 
@@ -1158,10 +1166,10 @@ info_reseaux_ubuntu()
         # test sauvegarde
         if test $? = 0
         then
-         echo "Sauvegarde effectué dans : Info"
+         echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
          write_log "Info_Reseaux_Ubuntu"
         else 
-         echo "Erreur lors de la sauvegarde"
+         echo -e "${RED}Erreur lors de la sauvegarde${NC}"
          write_log "Echec_Info_Reseaux_Ubuntu"
         fi
 
@@ -1192,10 +1200,10 @@ info_reseaux_windowns()
         # test sauvegarde
         if test $? = 0
         then
-         echo "Sauvegarde effectué dans : Info"
+         echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
          write_log "Info_Reseaux_Windows"
         else 
-         echo "Erreur lors de la sauvegarde"
+         echo -e "${RED}Erreur lors de la sauvegarde${NC}"
          write_log "Echec_Info_Reseaux_Windows"
         fi
 
@@ -1233,10 +1241,10 @@ echo "Carte graphique : "$carte_graphique"" > "$destination"
 
         if [ $? = 0 ]
         then 
-            echo "Sauvegarde effectué dans : Info"
+            echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
             write_log "Info_Carte_Graphique_Ubuntu"
         else
-            echo "Erreur lors de la sauvegarde"
+            echo -e "${RED}Erreur lors de la sauvegarde${NC}"
             write_log "Echec_Info_Carte_Graphique_Ubuntu"
         fi
 
@@ -1273,10 +1281,10 @@ echo "$carte_graphique" >> "$destination"
 
         if [ $? = 0 ]
         then 
-            echo "Sauvegarde effectué dans : Info"
+            echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
             write_log "Info_Carte_Graphique_Windows"
         else
-            echo "Erreur lors de la sauvegarde"
+            echo -e "${RED}Erreur lors de la sauvegarde${NC}"
             write_log "Echec_Info_Carte_Graphique_Windows"
         fi
 
@@ -1317,10 +1325,10 @@ echo "Uptime : "$uptime"" > "$destination"
 
         if [ $? = 0 ]
         then 
-            echo "Sauvegarde effectué dans : Info"
+            echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
             write_log "Info_Uptime_Ubuntu"
         else
-            echo "Erreur lors de la sauvegarde"
+            echo -e "${RED}Erreur lors de la sauvegarde${NC}"
             write_log "Echec_Info_Uptime_Ubuntu"
         fi
 
@@ -1357,10 +1365,10 @@ echo "$uptime" >> "$destination"
 
         if [ $? = 0 ]
         then 
-            echo "Sauvegarde effectué dans : Info"
+            echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
             write_log "Info_Uptime_Windows"
         else
-            echo "Erreur lors de la sauvegarde"
+            echo -e "${RED}Erreur lors de la sauvegarde${NC}"
             write_log "Echec_Info_Uptime_Windows"
         fi
 
@@ -1398,10 +1406,10 @@ echo "CPU% : "$cpu"" > "$destination"
 
         if [ $? = 0 ]
         then 
-            echo "Sauvegarde effectué dans : Info"
+            echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
             write_log "Info_CPU%_Ubuntu"
         else
-            echo "Erreur lors de la sauvegarde"
+            echo -e "${RED}Erreur lors de la sauvegarde${NC}"
             write_log "Echec_Info_CPU%_Ubuntu"
         fi
 
@@ -1438,10 +1446,10 @@ echo "$cpu %" >> "$destination"
 
         if [ $? = 0 ]
         then 
-            echo "Sauvegarde effectué dans : Info"
+            echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
             write_log "Info_CPU%_Windows"
         else
-            echo "Erreur lors de la sauvegarde"
+            echo -e "${RED}Erreur lors de la sauvegarde${NC}"
             write_log "Echec_Info_CPU%_Windows"
         fi
 
@@ -1472,10 +1480,10 @@ info_nombre_disques_ubuntu()
         # test sauvegarde
         if test $? = 0
         then
-         echo "Sauvegarde effectué dans : Info"
+         echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
          write_log "Info_Nombre_Disques_Durs_Ubuntu"
         else 
-         echo "Erreur lors de la sauvegarde"
+         echo -e "${RED}Erreur lors de la sauvegarde${NC}"
          write_log "Echec_Info_Nombre_Disques_Durs_Ubuntu"
         fi
 
@@ -1506,10 +1514,10 @@ info_nombre_disques_windows()
         # test sauvegarde
         if test $? = 0
         then
-         echo "Sauvegarde effectué dans : Info"
+         echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
          write_log "Info_Nombre_Disques_Durs_Windows"
         else 
-         echo "Erreur lors de la sauvegarde"
+         echo -e "${RED}Erreur lors de la sauvegarde${NC}"
          write_log "Echec_Info_Nombre_Disques_Durs_Windows"
         fi
 
@@ -1549,10 +1557,10 @@ done
 
         if [ $? = 0 ]
         then 
-            echo "Sauvegarde effectué dans : Info"
+            echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
             write_log "Info_10_Dernier_Evenements_Critique_Ubuntu"
         else
-            echo "Erreur lors de la sauvegarde"
+            echo -e "${RED}Erreur lors de la sauvegarde${NC}"
             write_log "Echec_Info_10_Dernier_Evenements_Critique_Ubuntu"
         fi
 
@@ -1589,10 +1597,10 @@ echo "$evenement_critique" >> "$destination"
 
         if [ $? = 0 ]
         then 
-            echo "Sauvegarde effectué dans : Info"
+            echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
             write_log "Info_10_Dernier_Evenements_Critique_Windows"
         else
-            echo "Erreur lors de la sauvegarde"
+            echo -e "${RED}Erreur lors de la sauvegarde${NC}"
             write_log "Echec_Info_10_Dernier_Evenements_Critique_Windows"
         fi
 
@@ -1639,10 +1647,10 @@ fi
 
         if [ $? = 0 ]
         then 
-            echo "Sauvegarde effectué dans : Info"
+            echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
             write_log "Info_Temperature_CPU_Ubuntu"
         else
-            echo "Erreur lors de la sauvegarde"
+            echo -e "${RED}Erreur lors de la sauvegarde${NC}"
             write_log "Echec_Info_Temperature_CPU_Ubuntu"
         fi
 
@@ -1692,10 +1700,10 @@ info_temperature_cpu_windows()
     #Test sauvegarde 
     if [ $? -eq 0 ]
     then 
-        echo "Sauvegarde effectuée dans : Info"
+        echo -e "${GREEN}Sauvegarde effectuée dans : Info${NC}"
         write_log "Info_Temperature_CPU_Windows"
     else
-        echo "Erreur lors de la sauvegarde"
+        echo -e "${RED}Erreur lors de la sauvegarde${NC}"
         write_log "Echec_Info_Temperature_CPU_Windows"
     fi
 
@@ -1724,10 +1732,10 @@ info_partition_ubuntu()
         # test sauvegarde
         if test $? = 0
         then
-         echo "Sauvegarde effectué dans : Info"
+         echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
          write_log "Info_Partitions_Ubuntu"
         else 
-         echo "Erreur lors de la sauvegarde"
+         echo -e "${RED}Erreur lors de la sauvegarde${NC}"
          write_log "Echec_Info_Partitions_Ubuntu"
         fi
 
@@ -1758,10 +1766,10 @@ info_partition_windows()
         # test sauvegarde
         if test $? = 0
         then
-         echo "Sauvegarde effectué dans : Info"
+         echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
          write_log "Info_Partitions_Windows"
         else 
-         echo "Erreur lors de la sauvegarde"
+         echo -e "${RED}Erreur lors de la sauvegarde${NC}"
          write_log "Echec_Info_Partitions_Windows"
         fi
 
@@ -1791,10 +1799,10 @@ info_espace_restant_ubuntu()
 
         if test $? = 0
         then
-         echo "sauvegarde effectué dans : Info"
+         echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
          write_log "Info_Espace_Disque_Restant_Ubuntu"
         else 
-         echo "Erreur lors de la sauvegarde"
+         echo -e "${RED}Erreur lors de la sauvegarde${NC}"
          write_log "Echec_Info_Espace_Disque_Restant_Ubuntu"
         fi
 
@@ -1828,10 +1836,10 @@ info_espace_restant_windows()
 
         # test sauvegarde
         if [ $? -eq 0 ]; then
-                echo "Sauvegarde effectuée dans : Info"
+                echo -e "${GREEN}Sauvegarde effectuée dans : Info${NC}"
                 write_log "Info_Espace_Disque_Restant_Windows"
         else
-                echo "Erreur lors de la sauvegarde"
+                echo -e "${RED}Erreur lors de la sauvegarde${NC}"
                 write_log "Echec_Info_Espace_Disque_Restant_Windows"
         fi
 
@@ -1882,10 +1890,10 @@ echo " Droits sur le $dossier : $verification_droits" > "$destination" 2>&1
 
       if test $? = 0
         then
-         echo "Sauvegarde effectué dans : Info"
+         echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
          write_log "Info_Droits_Dossier_wilder"
         else 
-         echo "Erreur lors de la sauvegarde"
+         echo -e "${RED}Erreur lors de la sauvegarde${NC}"
          write_log "Echec_Info_Droits_Dossier_wilder"
         fi
         sleep 5
@@ -1933,10 +1941,10 @@ echo " Droits sur le $dossier : $verification_droits" > "$destination" 2>&1
 
       if test $? = 0
         then
-         echo "Sauvegarde effectué dans : Info"
+         echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
          write_log "Info_Droits_Dossier_Wilder"
         else 
-         echo "Erreur lors de la sauvegarde"
+         echo -e "${RED}Erreur lors de la sauvegarde${NC}"
          write_log "Echec_Info_Droits_Dossier_Wilder"
         fi
         sleep 5
@@ -1954,10 +1962,10 @@ recherche_log_utilisateur ()
         # Recherche dans le fichier LOG 
         if grep -i "$utilisateur" "$LOG_FILE"
         then 
-            echo "Fin des résultats"
+            echo -e "${GREEN}Fin des résultats${NC}"
             write_log "Recherce_Log_${utilisateur}"
         else
-            echo "Aucun événement trouvé pour cet '$utilisateur'."
+            echo -e "${RED}Aucun événement trouvé pour cet '$utilisateur'.${NC}"
             write_log "Echec_Recherce_Log_${utilisateur}"
         fi
         sleep 5
@@ -1975,10 +1983,10 @@ recherche_log_ordinateur ()
     # Recherche dans le fichier LOG
     if grep -i "$machine" "$LOG_FILE"
     then 
-        echo "Fin des résultats"
+        echo -e "${GREEN}Fin des résultats${NC}"
         write_log "Recherche_Log_Machine_${machine}"
     else
-        echo "Aucun événement trouvé pour la machine : '$machine'."
+        echo -e "${RED}Aucun événement trouvé pour la machine : '$machine'.${NC}"
         write_log "Echec_Recherche_Log_Machine_${machine}"
     fi
     
@@ -1992,17 +2000,21 @@ recherche_log_ordinateur ()
 clear
 write_log "Start Script"
 
-echo "#################################################"
-echo "#                                               #"
-echo "#                MENU PRINCIPAL                 #"
-echo "#                                               #"
-echo "#################################################"
-
-
 # Ordinateurs , Utilisateurs ou Infos
 
 while true
 do
+echo ""
+
+        cat << "EOF"
+ ██╗   ███╗███████╗███╗   ██╗██╗   ██╗
+████╗ ████║██╔════╝████╗  ██║██║   ██║
+██╔████╔██║█████╗  ██╔██╗ ██║██║   ██║
+██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║
+██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝
+╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝
+EOF
+
         echo " Choississez une cible "
         echo "1- Ordinateurs"
         echo "2- Utilisateurs"
