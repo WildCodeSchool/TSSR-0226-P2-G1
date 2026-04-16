@@ -599,7 +599,7 @@ function ajout_grp_windows{
         }
         else
         {
-            Write-Host "Le groupe $groupe existe déjà" -ForegroundColor Red
+            Write-Host "Le groupe $groupe existe déjà" -ForegroundColor Green
         }
         # ajout au groupe (existant ou nouvellement créé)
         $addUser = ssh windows "net localgroup $groupe $user /add >nul 2>&1 && echo true || echo false"
@@ -1027,7 +1027,7 @@ function info_carte_graphique_ubuntu {
     $info_carte_graphique = ssh ubuntu "lspci | grep "VGA""
     
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "Infos Partitions :`n$info_carte_graphique"
+        Write-Host "Infos Carte Graphique :`n$info_carte_graphique"
 
         "Infos Carte Graphique :`n$info_carte_graphique" | Out-File -FilePath $destination -Encoding utf8
 
