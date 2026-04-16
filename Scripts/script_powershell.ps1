@@ -1586,7 +1586,7 @@ function info_temperature_CPU_Windows {
 
     # 1. Vérification si c'est une VM
     $model = ssh windows "powershell -Command `"(Get-CimInstance Win32_ComputerSystem).Model`""
-    $isVM = $model -match "Virtual|VMware|Hyper-V|KVM"
+    $isVM = $model -match "Virtual|VMware|Hyper-V|KVM|QEMU|Q35|Standard PC"
 
     if ($isVM) {
         $msg = "Type de machine : $model. C'est une VM, sonde physique non disponible."
