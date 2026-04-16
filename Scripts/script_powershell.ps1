@@ -691,10 +691,7 @@ function activation_parefeu_ubuntu {
             # Activation du pare-feu sur Ubuntu via SSH
             ssh ubuntu "sudo ufw allow ssh && sudo ufw --force enable"
 
-            # Vérification que le pare-feu a bien été activé
-            $verif = ssh ubuntu "sudo ufw status | grep -i 'active' && echo 'True' || echo 'False'"
-
-            if ($verif -match "True") {
+            if ($LASTEXITCODE -eq 0) {
                 Write-Host "Le pare-feu du client Ubuntu a bien été activé." -ForegroundColor Green
                 Write-Log "Activation_PareFeu_Ubuntu"
                 break
