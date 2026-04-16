@@ -974,7 +974,7 @@ echo "$liste_users" >> "$destination"
 
         if [ $? = 0 ]
         then 
-            echo -e "${GREEN}Sauvegarde effectué dans : Info${GREEN}"
+            echo -e "${GREEN}Sauvegarde effectué dans : Info${NC}"
             write_log "Info_Liste_Utilisateur_Windows"
         else
             echo -e "${RED}Erreur lors de la sauvegarde${NC}"
