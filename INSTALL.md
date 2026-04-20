@@ -47,7 +47,7 @@ Nous devons avoir 4 machines virtuelle sous Proxmox :
 --------------------
 -  **Client Ubuntu**
 - Nom : **CLILIN01**
--  IP : **172.16.10.30**
+-  IP : **172.16.10.3**
 --------------------
 -  **Client Windows 11** 
 -  Nom : **CLIWIN01** 
