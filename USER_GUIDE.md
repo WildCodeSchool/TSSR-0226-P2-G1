@@ -1,6 +1,36 @@
 ## Sommaire
 1. [**Introduction**](#1--introduction)
+
 2. [**Pré-requis d'utilisation**](#2---pré-requis-dutilisation)
+   - [**2.1 Script Bash**](#21-script-bash)
+   - [**2.2 Script PowerShell**](#22-script-powershell)
+
+3. [**Lancer le script**](#3-lancer-le-script)
+   - [**3.1 Sous Linux**](#31-sous-linux)
+   - [**3.2 Sous Windows**](#32-sous-windows)
+  
+4. [**Navigation dans les Menus**](#4-navigation-dans-les-menus)
+   - [**4.1 Menu principal**](#41-menu-principal)
+   - [**4.2 Choix de la cible**](#42-choix-de-la-cible)
+   - [**4.3 Séléction des actions**](#43-séléction-des-actions)
+   - [**4.4 Retour / Quitter**](#44-retour--quitter)
+
+5. [**Fonctionnalités - Utilisateurs**](#5-fonctionnalités---utilisateurs)
+6. [**Fonctionnalités - Machine clientes**](#6-fonctionnalités---machine-clientes)
+   - [**6.1 Actions possibles**](#61-actions-possibles)
+   - [**6.2 Informations récupérables sur la machine**](#62-informations-récupérables-sur-la-machine)
+  
+7. [**Enregistrement des informations**](#7-enregistrement-des-informations)
+   - [**7.1 Format des fichiers**](#71-format-des-fichiers)
+   - [**7.2 Emplacement**](#72-emplacement)
+  
+8. [**Journalisation (Logs)**](#8-journalisation-logs)
+   - [**8.1 Format des fichiers**](#81-format-des-fichiers)
+   - [**8.2 Emplacement**](#82-emplacement)
+  
+9. [**Quitter le script**](#9-quitter-le-script)
+10. [**FAQ**](#10-faq)
+
 
 
 ## 1 . Introduction
