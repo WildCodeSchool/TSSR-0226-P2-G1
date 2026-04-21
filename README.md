@@ -54,6 +54,23 @@ Voici le schéma du lab sur lequel nous travaillerons
 | Mohamed  | Scrum Master | Ajout à un groupe d'administration / Ajout à un groupe |
 | Zinedine | Technicien   | Suppression de compte utilisateur local (Ubuntu + Windows / PowerShell) |
 
+## Sprint 3
+
+| Membre   | Rôle         | Missions |
+|----------|--------------|----------|
+| Brice    | technicien         | 
+| Mohamed  | PO | 
+| Zinedine | Scrum Master  | 
+
+## Sprint 4
+
+| Membre   | Rôle         | Missions |
+|----------|--------------|----------|
+| Brice    | Technicien         | 
+| Mohamed  | Scrum Master | 
+| Zinedine | PO   | 
+
+
 ---
 
 ## 3 - Contexte du projet
