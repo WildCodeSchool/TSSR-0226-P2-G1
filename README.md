@@ -58,17 +58,17 @@ Voici le schéma du lab sur lequel nous travaillerons
 
 | Membre   | Rôle         | Missions |
 |----------|--------------|----------|
-| Brice    | technicien         | 
-| Mohamed  | PO | 
-| Zinedine | Scrum Master  | 
+| Brice    | technicien         |  Menu PowerShell / Verrouillage / Redémarrage / Création et suppression répertoire / Dépannage / Changement MDP / Script machine distante
+| Mohamed  | PO | Ajout à un groupe d'administration / Ajout à un groupe / Fonctions infos (équipe)
+| Zinedine | Scrum Master  | Création et suppression répertoire PowerShell / Création et suppression utilisateur local / Activation pare-feu (Ubuntu + Windows)
 
 ## Sprint 4
 
 | Membre   | Rôle         | Missions |
 |----------|--------------|----------|
-| Brice    | Technicien         | 
-| Mohamed  | Scrum Master | 
-| Zinedine | PO   | 
+| Brice    | Technicien         | Amélioration globale des scripts / Ajout couleurs aux scripts / Finalisation PowerShell
+| Mohamed  | Scrum Master | Finir le User Guide / Coordination des tests finaux
+| Zinedine | PO   | Révision totale du GitHub / Préparation de la présentation finale / Validation des livrables
 
 
 ---
