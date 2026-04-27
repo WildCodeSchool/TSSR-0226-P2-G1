@@ -111,7 +111,7 @@ Maintenant , vérifions l'état du serveur **SSH** avec cette commande :
 systemctl status sshd
 ```
 
-![verif_ssh_debian_up](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/verif_ssh_debian_UP.png)
+![verif_ssh_debian_up](Ressources/verif_ssh_debian_UP.png)
 
 Nous voyons que le statut est bien en mode *active*.
 Si cela n'était pas le cas, voici la commande pour démarrer le service : 
@@ -130,7 +130,7 @@ ssh-keygen -t ed25519 -f ~/.ssh/debian_ubuntu
 Après cette commande, laissez la clé stocker par défaut en appuyant sur la touche **"ENTREE"** de votre clavier.
 Passez également la **passphrase** avec la touche **"ENTREE"** de votre clavier.
 
-![keygen_debian_ubuntu](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/keygen_debian_ubuntu.png)
+![keygen_debian_ubuntu](Ressources/keygen_debian_ubuntu.png)
 
 ### 2.3 Copie de la clé publique sur CLILIN01
 
@@ -142,7 +142,7 @@ ssh-copy-id -i ~/.ssh/debian_ubuntu.pub wilder@172.16.10.30
 
 Nous devrions avoir cette affichage : 
 
-![keygen_debian_ubuntu_keycopy](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/keygen_debian_ubuntu_fonctionne.png)
+![keygen_debian_ubuntu_keycopy](Ressources/keygen_debian_ubuntu_fonctionne.png)
 
 Nous allons maintenant créer un *alias* pour avoir seulement à écrire une commande pour se connecter en **ssh** à notre machine Linux.
 
@@ -154,7 +154,7 @@ nano ~/.ssh/config
 
 Puis : 
 
-![creation_alias_ubuntu](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/creation_alias_ubuntu.png)
+![creation_alias_ubuntu](Ressources/creation_alias_ubuntu.png)
 
 Vous pouvez dès a présent vous connecter à votre machine en utilisant 
 ``` bash
@@ -173,16 +173,16 @@ cat ~/.ssh/debian_windows.pub | ssh wilder@172.16.10.20 "powershell -Command \"\
 
 Nous allons par la suite créer un *alias* , comme pour Ubuntu, en éditant le fichier **config** 
 
-![creation_alias_windows](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/creation_alias_windows.png)
+![creation_alias_windows](Ressources/creation_alias_windows.png)
 
 Pour autoriser la connexion par clé, nous allons modifier le fichier **sshd_config** sur Windows.
 Premièrement nous allons décommenté la ligne suivante en enlevant le **#** : 
 
-![sshd_config_pubkey](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/modif_sshdconfig_pubkey.png)
+![sshd_config_pubkey](Ressources/modif_sshdconfig_pubkey.png)
 
 Puis, commenter les deux dernières lignes du fichier en ajoutant un **#** :
 
-![sshd_config_commente](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/sshd_config_commente.png)
+![sshd_config_commente](Ressources/sshd_config_commente.png)
 
 Sauvegardez en faisant un **CTRL+S** , puis faites un ``restart-service sshd``
 
@@ -239,7 +239,7 @@ Get-WindowsCapability -Online | Where-Object Name -like 'OpenSSH*'
 
 Vous devriez avoir ce résultat : 
 
-![Install_serverssh_serveurwindows](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/install_serverssh_serveurwin.png)
+![Install_serverssh_serveurwindows](Ressources/install_serverssh_serveurwin.png)
 
 Si le client n'est pas installer, entrez la commande suivante : 
 
@@ -287,7 +287,7 @@ notepad "$env:USERPROFILE\.ssh\config"
 
 Puis remplir le fichier comme ceci : 
 
-![alias_serveur_ubuntu](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/configy_alias_serveur_ubuntu.png)
+![alias_serveur_ubuntu](Ressources/configy_alias_serveur_ubuntu.png)
 
 Sauvegardez en faisant un **CTRL+S**.
 
@@ -327,7 +327,7 @@ notepad "$env:USERPROFILE\.ssh\config"
 
 Puis remplir le fichier comme ceci : 
 
-![alias_serveur_windows](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/configy_alias_serveur_windows.png)
+![alias_serveur_windows](Ressources/configy_alias_serveur_windows.png)
 
 Sauvegardez en faisant un **CTRL+S**.
 
@@ -391,7 +391,7 @@ Configurez le service pour qu'il démarre automatiquement au démarrage de la ma
 Set-Service -Name sshd -StartupType "Automatic"
 ```
 
-![get_service_sshd](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/get_service_CLIWIN01.png)
+![get_service_sshd](Ressources/get_service_CLIWIN01.png)
 
 #### 4.2 Modification du fichier de configuration SSH
 
