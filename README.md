@@ -31,7 +31,7 @@ Il se compose de deux scripts :
 
 Voici le schéma du lab sur lequel nous travaillerons
 
-![Schema](https://github.com/WildCodeSchool/TSSR-0226-P2-G1/blob/main/Ressources/schema.png)
+![Schema](Ressources/schema.png)
 
 ---
 
